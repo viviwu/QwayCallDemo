@@ -17,6 +17,10 @@
 		0D92AF9C1DB8F37A00F01B01 /* XWLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D92AF9B1DB8F37A00F01B01 /* XWLoginVC.m */; };
 		0D92AF9F1DB8F39100F01B01 /* XWOnCallVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D92AF9E1DB8F39100F01B01 /* XWOnCallVC.m */; };
 		0D92AFA21DB8F3A200F01B01 /* XWDialVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D92AFA11DB8F3A200F01B01 /* XWDialVC.m */; };
+		0D92AFAA1DB9060100F01B01 /* iOS SDK介绍.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 0D92AFA61DB9060100F01B01 /* iOS SDK介绍.rtf */; };
+		0D92AFAB1DB9060100F01B01 /* Qway SDK语音通话接口.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 0D92AFA71DB9060100F01B01 /* Qway SDK语音通话接口.rtf */; };
+		0D92AFAC1DB9060100F01B01 /* QwaySDK iOS版初始化和配置接口.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 0D92AFA81DB9060100F01B01 /* QwaySDK iOS版初始化和配置接口.rtf */; };
+		0D92AFAD1DB9060100F01B01 /* QwaySDK iOS版开发指南.rtfd in Resources */ = {isa = PBXBuildFile; fileRef = 0D92AFA91DB9060100F01B01 /* QwaySDK iOS版开发指南.rtfd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +61,10 @@
 		0D92AF9E1DB8F39100F01B01 /* XWOnCallVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XWOnCallVC.m; sourceTree = "<group>"; };
 		0D92AFA01DB8F3A200F01B01 /* XWDialVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XWDialVC.h; sourceTree = "<group>"; };
 		0D92AFA11DB8F3A200F01B01 /* XWDialVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XWDialVC.m; sourceTree = "<group>"; };
+		0D92AFA61DB9060100F01B01 /* iOS SDK介绍.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "iOS SDK介绍.rtf"; sourceTree = "<group>"; };
+		0D92AFA71DB9060100F01B01 /* Qway SDK语音通话接口.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "Qway SDK语音通话接口.rtf"; sourceTree = "<group>"; };
+		0D92AFA81DB9060100F01B01 /* QwaySDK iOS版初始化和配置接口.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "QwaySDK iOS版初始化和配置接口.rtf"; sourceTree = "<group>"; };
+		0D92AFA91DB9060100F01B01 /* QwaySDK iOS版开发指南.rtfd */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; path = "QwaySDK iOS版开发指南.rtfd"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +123,7 @@
 				0D92AF9E1DB8F39100F01B01 /* XWOnCallVC.m */,
 				0D92AFA01DB8F3A200F01B01 /* XWDialVC.h */,
 				0D92AFA11DB8F3A200F01B01 /* XWDialVC.m */,
+				0D92AFA51DB9060100F01B01 /* ReadMe */,
 				0D92AF641DB8F2BD00F01B01 /* Main.storyboard */,
 				0D92AF671DB8F2BD00F01B01 /* Assets.xcassets */,
 				0D92AF691DB8F2BD00F01B01 /* LaunchScreen.storyboard */,
@@ -148,6 +157,17 @@
 				0D92AF821DB8F2BD00F01B01 /* Info.plist */,
 			);
 			path = QwayCallDemoUITests;
+			sourceTree = "<group>";
+		};
+		0D92AFA51DB9060100F01B01 /* ReadMe */ = {
+			isa = PBXGroup;
+			children = (
+				0D92AFA61DB9060100F01B01 /* iOS SDK介绍.rtf */,
+				0D92AFA71DB9060100F01B01 /* Qway SDK语音通话接口.rtf */,
+				0D92AFA81DB9060100F01B01 /* QwaySDK iOS版初始化和配置接口.rtf */,
+				0D92AFA91DB9060100F01B01 /* QwaySDK iOS版开发指南.rtfd */,
+			);
+			path = ReadMe;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,7 +279,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D92AFAA1DB9060100F01B01 /* iOS SDK介绍.rtf in Resources */,
+				0D92AFAD1DB9060100F01B01 /* QwaySDK iOS版开发指南.rtfd in Resources */,
 				0D92AF6B1DB8F2BD00F01B01 /* LaunchScreen.storyboard in Resources */,
+				0D92AFAC1DB9060100F01B01 /* QwaySDK iOS版初始化和配置接口.rtf in Resources */,
+				0D92AFAB1DB9060100F01B01 /* Qway SDK语音通话接口.rtf in Resources */,
 				0D92AF681DB8F2BD00F01B01 /* Assets.xcassets in Resources */,
 				0D92AF661DB8F2BD00F01B01 /* Main.storyboard in Resources */,
 			);
@@ -526,6 +550,7 @@
 				0D92AF871DB8F2BD00F01B01 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0D92AF881DB8F2BD00F01B01 /* Build configuration list for PBXNativeTarget "QwayCallDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -534,6 +559,7 @@
 				0D92AF8A1DB8F2BD00F01B01 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0D92AF8B1DB8F2BD00F01B01 /* Build configuration list for PBXNativeTarget "QwayCallDemoUITests" */ = {
 			isa = XCConfigurationList;
@@ -542,6 +568,7 @@
 				0D92AF8D1DB8F2BD00F01B01 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

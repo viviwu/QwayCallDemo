@@ -7,16 +7,77 @@
 //
 
 #import "AppDelegate.h"
+#import "XWDialVC.h"
+#import "XWOnCallVC.h"
+#import "XWLoginVC.h"
 
 @interface AppDelegate ()
+
+@property (nonatomic, strong)XWDialVC * mainDialVC;
 
 @end
 
 @implementation AppDelegate
 
+-(void)enterMainViewWithIdentifier:(NSString *)identifier{
+    // dispatch_async( dispatch_get_global_queue ( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{ /*  */    });
+    // initialize UI
+    if (!_mainDialVC) {
+        UIStoryboard * mainUIStoryboard=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        _mainDialVC=[mainUIStoryboard instantiateViewControllerWithIdentifier:@"2"];
+    }
+    [[XWOnCallVC instance] resetControlersToDefaultState];
+    
+    UIStoryboard * mianBoard=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController * mainVC=nil;
+    mainVC=[mianBoard instantiateViewControllerWithIdentifier:identifier];
+    [UIView transitionWithView: self.window
+                      duration: 0.5
+                       options: UIViewAnimationOptionTransitionFlipFromLeft
+                    animations: ^{
+                        BOOL oldState=[UIView areAnimationsEnabled];
+                        [UIView setAnimationsEnabled:NO];
+                        self.window.rootViewController = mainVC;
+                        [UIView setAnimationsEnabled:oldState];
+                    }completion: NULL
+     ];
+    
+    if ([identifier isEqualToString:@"0"]) {
+        if (![kUserDef_OBJ(@"username") length] ||
+            ![kUserDef_OBJ(@"password") length] ||
+            ![kUserDef_OBJ(@"logintoken") length] ||
+            ![kUserDef_OBJ(@"sipserver") length] ||
+            ![kUserDef_OBJ(@"imserver") length])
+        {
+            //            [self enterMainViewWithIdentifier:@"1"];
+        }else{
+            [self voipInitializeProxyConfig];
+        }
+    }else{ }
+    
+}
+#pragma mark-linphoneVoipProxyConfig
+
+-(void)voipInitializeProxyConfig
+{
+    if(![XWCallCenter isXWCallCoreReady]) {
+        [[XWCallCenter instance] startXWCallCore];
+    }
+    [XWCallCenter removeAllAccountsConfig];//清空之前的配置
+    
+    [XWCallCenter addProxyConfig: kUserDef_OBJ(@"username")
+                        password: kUserDef_OBJ(@"password")
+                          domain: kUserDef_OBJ(@"sipserver")
+                          server: kUserDef_OBJ(@"server")];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+     XWCallCenter *instance = [XWCallCenter instance];
+    [instance   startXWCallCore];//主要是确保首次启动前完全初始化了
+    
+     [[XWOnCallVC instance] resetControlersToDefaultState];
+    
     return YES;
 }
 

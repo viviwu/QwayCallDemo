@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XWCallCenter.h"
 
 @interface XWOnCallVC : UIViewController
+
++(XWOnCallVC*)instance;
+
+-(void)resetControlersToDefaultState;
+-(void) terminateCurrentCall;
 
 @end

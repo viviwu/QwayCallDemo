@@ -9,6 +9,7 @@
 #import "XWDialVC.h"
 
 @interface XWDialVC ()
+@property (strong, nonatomic) IBOutlet UITextField *numberTF;
 
 @end
 
@@ -17,6 +18,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+}
+- (IBAction)stopEdit:(id)sender {
+    [self.view endEditing:YES];
+}
+
+- (IBAction)makeVoipCall:(id)sender {
+    
 }
 
 - (void)didReceiveMemoryWarning {

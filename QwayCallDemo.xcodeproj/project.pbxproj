@@ -33,7 +33,6 @@
 		0D92AF6B1DB8F2BD00F01B01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D92AF691DB8F2BD00F01B01 /* LaunchScreen.storyboard */; };
 		0D92AF761DB8F2BD00F01B01 /* QwayCallDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D92AF751DB8F2BD00F01B01 /* QwayCallDemoTests.m */; };
 		0D92AF811DB8F2BD00F01B01 /* QwayCallDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D92AF801DB8F2BD00F01B01 /* QwayCallDemoUITests.m */; };
-		0D92AF9C1DB8F37A00F01B01 /* XWLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D92AF9B1DB8F37A00F01B01 /* XWLoginVC.m */; };
 		0D92AF9F1DB8F39100F01B01 /* XWOnCallVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D92AF9E1DB8F39100F01B01 /* XWOnCallVC.m */; };
 		0D92AFA21DB8F3A200F01B01 /* XWDialVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D92AFA11DB8F3A200F01B01 /* XWDialVC.m */; };
 		0D92AFAA1DB9060100F01B01 /* iOS SDK介绍.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 0D92AFA61DB9060100F01B01 /* iOS SDK介绍.rtf */; };
@@ -95,8 +94,6 @@
 		0D92AF7C1DB8F2BD00F01B01 /* QwayCallDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QwayCallDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D92AF801DB8F2BD00F01B01 /* QwayCallDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QwayCallDemoUITests.m; sourceTree = "<group>"; };
 		0D92AF821DB8F2BD00F01B01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0D92AF9A1DB8F37A00F01B01 /* XWLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XWLoginVC.h; sourceTree = "<group>"; };
-		0D92AF9B1DB8F37A00F01B01 /* XWLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XWLoginVC.m; sourceTree = "<group>"; };
 		0D92AF9D1DB8F39100F01B01 /* XWOnCallVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XWOnCallVC.h; sourceTree = "<group>"; };
 		0D92AF9E1DB8F39100F01B01 /* XWOnCallVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XWOnCallVC.m; sourceTree = "<group>"; };
 		0D92AFA01DB8F3A200F01B01 /* XWDialVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XWDialVC.h; sourceTree = "<group>"; };
@@ -214,8 +211,6 @@
 				0D92AF5F1DB8F2BD00F01B01 /* AppDelegate.m */,
 				0D92AFA01DB8F3A200F01B01 /* XWDialVC.h */,
 				0D92AFA11DB8F3A200F01B01 /* XWDialVC.m */,
-				0D92AF9A1DB8F37A00F01B01 /* XWLoginVC.h */,
-				0D92AF9B1DB8F37A00F01B01 /* XWLoginVC.m */,
 				0D92AF9D1DB8F39100F01B01 /* XWOnCallVC.h */,
 				0D92AF9E1DB8F39100F01B01 /* XWOnCallVC.m */,
 				0D92AFA51DB9060100F01B01 /* ReadMe */,
@@ -415,7 +410,6 @@
 				0D92AF601DB8F2BD00F01B01 /* AppDelegate.m in Sources */,
 				0D92AF5D1DB8F2BD00F01B01 /* main.m in Sources */,
 				0D92AFA21DB8F3A200F01B01 /* XWDialVC.m in Sources */,
-				0D92AF9C1DB8F37A00F01B01 /* XWLoginVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,6 +557,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 3WV7R4EVUN;
+				ENABLE_NS_ASSERTIONS = YES;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/QwaySDK/include";
 				INFOPLIST_FILE = QwayCallDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

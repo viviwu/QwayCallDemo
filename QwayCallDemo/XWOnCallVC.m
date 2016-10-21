@@ -9,6 +9,7 @@
 #import "XWOnCallVC.h"
 #import "AppDelegate.h"
 
+const static char _keyValues[] = {0, '1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#'};
 @interface XWOnCallVC ()
 {
     NSTimer * callTimer;
@@ -239,6 +240,38 @@ static XWOnCallVC * globalOBJ=nil;
 }
 
 
+//static NSString *_keyStrs[] = {nil, @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"*", @"0", @"#"};
+
+- (IBAction)didTapDTMFKey:(UIButton *)sender {
+    NSLog(@"+++++++sender.tag=%ld", sender.tag);
+    int digit = _keyValues[sender.tag];
+    NSLog(@"digit==%d", digit );
+    [[XWCallCenter instance]sendDigitForDTMF:digit];
+}
+
+- (IBAction)micphoneMute:(UIButton*)sender {
+    if(![XWCallCenter isXWCallCoreReady]) {
+        return;
+    }
+    sender.selected=!sender.selected;
+    [[XWCallCenter instance] voipMicMute:sender.selected];
+}
+
+- (IBAction)speakerHandsFree:(UIButton*)sender {
+    sender.selected=!sender.selected;
+    [[XWCallCenter instance] setSpeakerEnabled: sender.selected];
+}
+
+- (IBAction)holdOnTheCall:(UIButton*)sender {
+    sender.selected=!sender.selected;
+    [[XWCallCenter instance] holdOnCall: sender.selected];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kXWCallUpdate object:nil];
+}
+
 //static int duration = 0;
 - (void)timeout:(id)unused
 {
@@ -257,10 +290,6 @@ static XWOnCallVC * globalOBJ=nil;
     // Dispose of any resources that can be recreated.
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kXWCallUpdate object:nil];
-}
 
 /*
 #pragma mark - Navigation

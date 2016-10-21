@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--DialVC-->
+        <!--RegistrationState-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="XWDialVC" sceneMemberID="viewController">
@@ -19,12 +19,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Chz-Kb-J43">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="8000" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Chz-Kb-J43">
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="JLb-bL-EEP"/>
                                 </constraints>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ABO-Ib-1sy">
@@ -32,9 +32,33 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="7w8-ZC-8XQ"/>
                                 </constraints>
-                                <state key="normal" title="make voip Call"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="make voip Call">
+                                    <color key="titleColor" red="1" green="0.97278979539999999" blue="0.2072258048" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="makeVoipCall:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RJz-Oa-raR"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CallRegistrationState" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ola-nx-HMm">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="33" id="kCq-db-Hyi"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="1" green="0.085023603830000002" blue="0.27691201859999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jr0-Rr-bPs">
+                                <color key="backgroundColor" red="1" green="0.085023603830000002" blue="0.27691201859999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Xrl-sP-1UQ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Log Out">
+                                    <color key="titleColor" red="1" green="0.97278979539999999" blue="0.2072258048" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="logoutAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vsl-pN-3gx"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -43,101 +67,42 @@
                         <constraints>
                             <constraint firstItem="Chz-Kb-J43" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="24" id="1De-Af-lcO"/>
                             <constraint firstItem="ABO-Ib-1sy" firstAttribute="top" secondItem="Chz-Kb-J43" secondAttribute="bottom" constant="40" id="5TU-st-kMs"/>
+                            <constraint firstItem="Ola-nx-HMm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="DOT-PB-gUk"/>
                             <constraint firstItem="Chz-Kb-J43" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="49" id="EnH-dZ-NTx"/>
+                            <constraint firstItem="Ola-nx-HMm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="GU8-1M-4Ss"/>
                             <constraint firstItem="ABO-Ib-1sy" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="42" id="ICr-xL-nIs"/>
+                            <constraint firstAttribute="trailing" secondItem="jr0-Rr-bPs" secondAttribute="trailing" constant="39" id="Im3-uw-fj9"/>
                             <constraint firstAttribute="trailing" secondItem="ABO-Ib-1sy" secondAttribute="trailing" constant="42" id="k0W-6w-FJ9"/>
+                            <constraint firstAttribute="trailing" secondItem="Ola-nx-HMm" secondAttribute="trailing" id="wKV-fV-6BU"/>
+                            <constraint firstItem="jr0-Rr-bPs" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="50" id="x3f-hb-azj"/>
+                            <constraint firstItem="jr0-Rr-bPs" firstAttribute="top" secondItem="ABO-Ib-1sy" secondAttribute="bottom" constant="57" id="xLQ-88-ymX"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Chz-Kb-J43" secondAttribute="trailing" constant="23" id="zzp-aL-xiD"/>
                         </constraints>
                         <connections>
-                            <outletCollection property="gestureRecognizers" destination="i5Q-bT-YkM" appends="YES" id="Vvs-GP-hpn"/>
+                            <outletCollection property="gestureRecognizers" destination="MOe-6q-E3p" appends="YES" id="J3N-XF-yfB"/>
                         </connections>
                     </view>
-                    <navigationItem key="navigationItem" id="Snw-Ei-xM4"/>
+                    <navigationItem key="navigationItem" title="RegistrationState" id="Snw-Ei-xM4">
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="u4l-9o-H9o">
+                            <connections>
+                                <action selector="refreshSipConnect:" destination="BYZ-38-t0r" id="JDG-Kt-qQ7"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="numberTF" destination="Chz-Kb-J43" id="TyF-d5-khi"/>
+                        <outlet property="registrationStateLabel" destination="Ola-nx-HMm" id="uq9-ao-WNZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="i5Q-bT-YkM">
+                <tapGestureRecognizer id="MOe-6q-E3p">
                     <connections>
-                        <action selector="stopEdit:" destination="BYZ-38-t0r" id="6A6-X3-eFi"/>
+                        <action selector="stopEdit:" destination="BYZ-38-t0r" id="Zfa-ib-X0B"/>
                     </connections>
-                </pongPressGestureRecognizer>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1193" y="879"/>
-        </scene>
-        <!--LoginVC-->
-        <scene sceneID="Eg0-AU-ITe">
-            <objects>
-                <viewController storyboardIdentifier="1" useStoryboardIdentifierAsRestorationIdentifier="YES" id="EUy-AI-Geo" customClass="XWLoginVC" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="r4K-NU-fGL"/>
-                        <viewControllerLayoutGuide type="bottom" id="ut3-Qi-oSL"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="0Po-SR-1Z8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="PhoneNumber" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ITz-6b-3Ik">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="PTL-ZX-VCP"/>
-                                    <constraint firstAttribute="width" constant="168" id="hpR-cy-2Uf"/>
-                                </constraints>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OQB-6J-XaM">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="6dE-N6-f94"/>
-                                    <constraint firstAttribute="width" constant="168" id="R7N-Ga-am3"/>
-                                </constraints>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <textInputTraits key="textInputTraits" keyboardType="alphabet"/>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xrc-iO-CpA">
-                                <color key="backgroundColor" red="0.1273955349" green="0.7361578526" blue="0.054027028820000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Ao3-RL-IQG"/>
-                                    <constraint firstAttribute="width" constant="168" id="efj-Eg-U1I"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title="Login">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="loginAction:" destination="EUy-AI-Geo" eventType="touchUpInside" id="TtB-ae-ZkO"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" red="0.97695339250000002" green="1" blue="0.72114645259999999" alpha="1" colorSpace="calibratedRGB"/>
-                        <gestureRecognizers/>
-                        <constraints>
-                            <constraint firstItem="ITz-6b-3Ik" firstAttribute="centerX" secondItem="0Po-SR-1Z8" secondAttribute="centerX" id="99c-Ei-obg"/>
-                            <constraint firstItem="xrc-iO-CpA" firstAttribute="top" secondItem="OQB-6J-XaM" secondAttribute="bottom" constant="45" id="Uwa-EO-kGW"/>
-                            <constraint firstItem="ITz-6b-3Ik" firstAttribute="top" secondItem="r4K-NU-fGL" secondAttribute="bottom" constant="79" id="aPO-wl-Fvu"/>
-                            <constraint firstItem="OQB-6J-XaM" firstAttribute="top" secondItem="ITz-6b-3Ik" secondAttribute="bottom" constant="29" id="d4F-F6-NzA"/>
-                            <constraint firstItem="OQB-6J-XaM" firstAttribute="centerX" secondItem="0Po-SR-1Z8" secondAttribute="centerX" id="wxn-mp-2Nz"/>
-                            <constraint firstItem="xrc-iO-CpA" firstAttribute="centerX" secondItem="0Po-SR-1Z8" secondAttribute="centerX" id="xbE-FY-s9c"/>
-                        </constraints>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="VEi-7l-e3Z" appends="YES" id="rDZ-wJ-k3p"/>
-                        </connections>
-                    </view>
-                    <connections>
-                        <outlet property="numberTF" destination="ITz-6b-3Ik" id="Gsj-Oh-tSs"/>
-                        <outlet property="passwordTF" destination="OQB-6J-XaM" id="uuy-Bz-320"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kOd-kZ-eYu" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="VEi-7l-e3Z">
-                    <connections>
-                        <action selector="stopEdit:" destination="EUy-AI-Geo" id="XJn-sP-hG4"/>
-                    </connections>
-                </pongPressGestureRecognizer>
-            </objects>
-            <point key="canvasLocation" x="1192.5" y="180.63380281690141"/>
+            <point key="canvasLocation" x="1191.2" y="878.41079460269873"/>
         </scene>
         <!--On CallVC-->
         <scene sceneID="aBF-k8-v6E">
@@ -161,81 +126,117 @@
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eoh-VA-oaR">
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nnO-gk-1Bb">
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nnO-gk-1Bb">
                                         <frame key="frameInset" minX="5" minY="5" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="1"/>
+                                        <connections>
+                                            <action selector="didTapDTMFKey:" destination="q6s-9m-dNv" eventType="touchUpInside" id="VLK-Gh-to2"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="byP-gU-LpQ">
+                                    <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="byP-gU-LpQ">
                                         <frame key="frameInset" minX="195" minY="5" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="5"/>
+                                        <connections>
+                                            <action selector="didTapDTMFKey:" destination="q6s-9m-dNv" eventType="touchUpInside" id="sEH-vg-anq"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L2n-Gb-boE">
+                                    <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L2n-Gb-boE">
                                         <frame key="frameInset" minX="145" minY="5" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="4"/>
+                                        <connections>
+                                            <action selector="didTapDTMFKey:" destination="q6s-9m-dNv" eventType="touchUpInside" id="UU3-ER-2nn"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wx-s9-hVf">
+                                    <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wx-s9-hVf">
                                         <frame key="frameInset" minX="100" minY="5" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="3"/>
+                                        <connections>
+                                            <action selector="didTapDTMFKey:" destination="q6s-9m-dNv" eventType="touchUpInside" id="270-OY-JQN"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xd1-r3-OIM">
+                                    <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xd1-r3-OIM">
                                         <frame key="frameInset" minX="55" minY="5" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="2"/>
+                                        <connections>
+                                            <action selector="didTapDTMFKey:" destination="q6s-9m-dNv" eventType="touchUpInside" id="OQq-6i-TUC"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PQl-ll-gGm">
+                                    <button opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PQl-ll-gGm">
                                         <frame key="frameInset" minX="5" minY="50" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="6"/>
+                                        <connections>
+                                            <action selector="didTapDTMFKey:" destination="q6s-9m-dNv" eventType="touchUpInside" id="Yqo-3z-AUS"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WKE-Jt-63n">
+                                    <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WKE-Jt-63n">
                                         <frame key="frameInset" minX="195" minY="50" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="0"/>
+                                        <connections>
+                                            <action selector="didTapDTMFKey:" destination="q6s-9m-dNv" eventType="touchUpInside" id="IgY-bh-wu6"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oLl-R7-Lrc">
+                                    <button opaque="NO" tag="9" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oLl-R7-Lrc">
                                         <frame key="frameInset" minX="145" minY="50" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="9"/>
+                                        <connections>
+                                            <action selector="didTapDTMFKey:" destination="q6s-9m-dNv" eventType="touchUpInside" id="uzC-TW-uIY"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LIQ-sW-xuC">
+                                    <button opaque="NO" tag="8" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LIQ-sW-xuC">
                                         <frame key="frameInset" minX="100" minY="50" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="8"/>
+                                        <connections>
+                                            <action selector="didTapDTMFKey:" destination="q6s-9m-dNv" eventType="touchUpInside" id="yz6-hS-g2I"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dXe-jH-VtQ">
+                                    <button opaque="NO" tag="7" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dXe-jH-VtQ">
                                         <frame key="frameInset" minX="55" minY="50" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="7"/>
+                                        <connections>
+                                            <action selector="didTapDTMFKey:" destination="q6s-9m-dNv" eventType="touchUpInside" id="Tcw-XW-0mj"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oc8-k1-7Xm">
+                                    <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oc8-k1-7Xm">
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="110" id="5nl-c4-QVE"/>
                                             <constraint firstAttribute="height" constant="30" id="ZdC-1l-9mw"/>
                                         </constraints>
                                         <state key="normal" title="#"/>
+                                        <connections>
+                                            <action selector="didTapDTMFKey:" destination="q6s-9m-dNv" eventType="touchUpInside" id="Y0c-UW-0m0"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7np-tA-ekp">
+                                    <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7np-tA-ekp">
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="0dd-Kp-eY1"/>
                                             <constraint firstAttribute="width" constant="110" id="tW1-1K-lg2"/>
                                         </constraints>
                                         <state key="normal" title="*"/>
+                                        <connections>
+                                            <action selector="didTapDTMFKey:" destination="q6s-9m-dNv" eventType="touchUpInside" id="Z5X-zL-Q58"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -289,18 +290,27 @@
                                         <state key="normal" title="Speaker">
                                             <color key="titleColor" red="1" green="0.97278979539999999" blue="0.2072258048" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="speakerHandsFree:" destination="q6s-9m-dNv" eventType="touchUpInside" id="xWk-Ke-rPJ"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="piT-AA-PYn">
                                         <color key="backgroundColor" red="0.31366977099999999" green="0.51454189559999997" blue="0.97173477559999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="Hold">
                                             <color key="titleColor" red="1" green="0.97278979539999999" blue="0.2072258048" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="holdOnTheCall:" destination="q6s-9m-dNv" eventType="touchUpInside" id="1Gj-kR-6b1"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DZD-9A-BkU">
                                         <color key="backgroundColor" red="0.31366977099999999" green="0.51454189559999997" blue="0.97173477559999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="Mute">
                                             <color key="titleColor" red="1" green="0.97278979539999999" blue="0.2072258048" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="micphoneMute:" destination="q6s-9m-dNv" eventType="touchUpInside" id="9j8-xe-lXb"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -354,7 +364,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fRV-Gz-MyI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1935" y="639.08450704225356"/>
+            <point key="canvasLocation" x="1919" y="878"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="bxb-sa-U4v">

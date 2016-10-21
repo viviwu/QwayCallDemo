@@ -33,6 +33,12 @@ typedef enum _CallRemoteCommand {
     
 } XWCallRemoteCommand;
 
+//#define WeakSelf __weak typeof(self) weakSelf = self;
+//#define WeakObj(o) __weak typeof(o) o##Weak = o;
+//#define WeakObj(o) autoreleasepool{} __weak typeof(o) o##Weak = o;
+//#define WeakObj(o) try{}@finally{} __weak typeof(o) o##Weak = o;
+
+
 
 typedef enum _XWCallState{
     XWCallIdle,	/**<Initial call state */
@@ -98,7 +104,8 @@ typedef enum _Connectivity {
 #define kRemoteRing  @"ringback.wav"   //remote_ring 来电等待提示音文件名
 #define kHoldMusic  @"hold.mkv"     //hold_music 通话保留音文件名
 #define kLocalRing  @"notes_of_the_optimistic.caf"  //通知提示音文件名
-
+#define sandBoxServer @"http://sandbox.91voip.com"
+#define openVoipServer @"http://open.91voip.com"
 //***********************************
 #pragma mark--********XWCallCenter
 
@@ -106,13 +113,18 @@ typedef enum _Connectivity {
 
 + (XWCallCenter*)instance;//单例主体，切勿重复实例化
 
+- (void)proxyCoreWithAppKey:(NSString*)appid
+                   Memberid:(NSString*)memberid
+                  Memberkey:(NSString*)memberkey;
+-(void)voipInitializeProxyConfig;
+
 #pragma mark--ResignActive
 - (void)resetXWCallCore;    //重置呼叫系统
-- (void)startXWCallCoreWithAppID:(NSString*)appKey;    //启动呼叫系统
+- (void)startXWCallCore;    //启动呼叫系统
 + (BOOL)isXWCallCoreReady;//呼叫中心是否初始化完成
 
 #pragma markk--ProxyConfig
-+ (void)addProxyConfig:(NSString*)username password:(NSString*)password domain:(NSString*)domain server:(NSString*)server;//添加基本配置信息:账户名ID
+//+ (void)addProxyConfig:(NSString*)username password:(NSString*)password domain:(NSString*)domain server:(NSString*)server;//添加基本配置信息:账户名ID
 
 + (void)removeAllAccountsConfig;    //移除之前所有账号配置信息
 
@@ -155,7 +167,7 @@ typedef enum _Connectivity {
 #pragma mark--RemoteCommandConnect
 @property (nonatomic, strong) NSTimer * pingTimer;
 
--(void)connectWithCMDserver:(NSString*)host loginToken:(NSString*)logintoken userName:(NSString*)username;
+//-(void)connectWithCMDserver:(NSString*)host loginToken:(NSString*)logintoken userName:(NSString*)username;
 -(BOOL)isCMDConnected;
 
 //typedef enum XMPPMessageStatus {

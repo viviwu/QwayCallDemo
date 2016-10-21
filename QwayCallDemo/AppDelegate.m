@@ -5,11 +5,12 @@
 //  Created by viviwu on 2016/10/20.
 //  Copyright © 2016年 viviwu. All rights reserved.
 //
+#include <string.h>
+#include <CommonCrypto/CommonCrypto.h>
 
 #import "AppDelegate.h"
 #import "XWDialVC.h"
 #import "XWOnCallVC.h"
-#import "XWLoginVC.h"
 
 @interface AppDelegate ()
 
@@ -18,58 +19,6 @@
 @end
 
 @implementation AppDelegate
-
--(void)enterMainViewWithIdentifier:(NSString *)identifier{
-    // dispatch_async( dispatch_get_global_queue ( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{ /*  */    });
-    // initialize UI
-    if (!_mainDialVC) {
-        UIStoryboard * mainUIStoryboard=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        _mainDialVC=[mainUIStoryboard instantiateViewControllerWithIdentifier:@"2"];
-    }
-    [[XWOnCallVC instance] resetControlersToDefaultState];
-    
-    UIStoryboard * mianBoard=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController * mainVC=nil;
-    mainVC=[mianBoard instantiateViewControllerWithIdentifier:identifier];
-    [UIView transitionWithView: self.window
-                      duration: 0.5
-                       options: UIViewAnimationOptionTransitionFlipFromLeft
-                    animations: ^{
-                        BOOL oldState=[UIView areAnimationsEnabled];
-                        [UIView setAnimationsEnabled:NO];
-                        self.window.rootViewController = mainVC;
-                        [UIView setAnimationsEnabled:oldState];
-                    }completion: NULL
-     ];
-    
-    if ([identifier isEqualToString:@"0"]) {
-        if (![kUserDef_OBJ(@"username") length] ||
-            ![kUserDef_OBJ(@"password") length] ||
-            ![kUserDef_OBJ(@"logintoken") length] ||
-            ![kUserDef_OBJ(@"sipserver") length] ||
-            ![kUserDef_OBJ(@"imserver") length])
-        {
-            //            [self enterMainViewWithIdentifier:@"1"];
-        }else{
-            [self voipInitializeProxyConfig];
-        }
-    }else{ }
-    
-}
-#pragma mark-linphoneVoipProxyConfig
-
--(void)voipInitializeProxyConfig
-{
-    if(![XWCallCenter isXWCallCoreReady]) {
-        [[XWCallCenter instance] startXWCallCoreWithAppID:kID_QWAY_APP];
-    }
-    [XWCallCenter removeAllAccountsConfig];//清空之前的配置
-    
-    [XWCallCenter addProxyConfig: kUserDef_OBJ(@"username")
-                        password: kUserDef_OBJ(@"password")
-                          domain: kUserDef_OBJ(@"sipserver")
-                          server: kUserDef_OBJ(@"server")];
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -81,16 +30,34 @@
         self.devicePushToken = tokenString;
     }
 #endif
-    //default
-    [kUserDef setObject:@"+86" forKey:@"area"];
     
      XWCallCenter *instance = [XWCallCenter instance];
-     [instance   startXWCallCoreWithAppID:kID_QWAY_APP];//主要是确保首次启动前完全初始化了
+     [instance   startXWCallCore];//主要是确保首次启动前完全初始化了
+    
+    if (![kUserDef_OBJ(@"sipphone") length] ||
+        ![kUserDef_OBJ(@"sippw") length] ||
+        ![kUserDef_OBJ(@"logintoken") length] ||
+        ![kUserDef_OBJ(@"sipserver") length] ||
+        ![kUserDef_OBJ(@"tcpserver") length])
+    {
+        [[XWCallCenter instance] proxyCoreWithAppKey:kAppID Memberid:memberid Memberkey:memberkey];
+    }else{
+        [[XWCallCenter instance] voipInitializeProxyConfig];
+    }
     
      [[XWOnCallVC instance] resetControlersToDefaultState];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(callRemoteCommandAction:) name:kCallRemoteCommandKey object:nil];
     
     return YES;
+}
+
+-(void)logoutAction{
+    
+    if ([XWCallCenter isXWCallCoreReady]) {
+        [XWCallCenter removeAllAccountsConfig];
+        [XWCallCenter XWCallWillTerminate];
+    }
 }
 
 -(void)callRemoteCommandAction:(NSNotification*)notify
@@ -107,32 +74,9 @@
         //一般不会更换的
     }
 }
--(void)logoutAction{
-    
-    [kUserDef removeObjectForKey:@"username"];
-    [kUserDef removeObjectForKey:@"password"];
-    [kUserDef removeObjectForKey:@"password"];
-    [kUserDef removeObjectForKey:@"password"];
-    [kUserDef removeObjectForKey:@"password"];
-    [kUserDef removeObjectForKey:@"countryCode"];
-    [kUserDef synchronize];
-    
-    [XWCallCenter XWCallWillTerminate];
-    //清空配置
-    [XWCallCenter removeAllAccountsConfig];
-    
-    if ([XWCallCenter isXWCallCoreReady]) {
-        //[[XWCallCenter instance] destroyLibLinphone];
-        [[XWCallCenter instance] destroyXWCallCore];
-    }
-    
-    [UIView animateWithDuration:0.5f animations:^{
-        
-        UIStoryboard * mianBoard=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UINavigationController * mainTab=[mianBoard instantiateViewControllerWithIdentifier:@"0"];
-        [[UIApplication sharedApplication].delegate.window setRootViewController:mainTab];
-    }];
-}
+
+#pragma mark--applicationDidEnterBackground
+UIBackgroundTaskIdentifier backgroundTaskID;
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -146,10 +90,55 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
      [[XWCallCenter instance] enterBackgroundMode];
 #warning 应用如何持续后台 自己写吧 务必可以保持后台！
+    BOOL backgroundAccepted = [[UIApplication sharedApplication] setKeepAliveTimeout:600 handler:^{
+        [self backgroundhandler];
+    }];
+    if (backgroundAccepted)
+    {
+        NSLog(@"backgrounding accepted");
+    }
+    if (NO == [[UIDevice currentDevice] isMultitaskingSupported]){
+        return;
+    }
+    [self backgroundhandler];
+    //开启一个后台任务
+    backgroundTaskID = [application beginBackgroundTaskWithExpirationHandler:^{
+        
+        if (backgroundTaskID != UIBackgroundTaskInvalid) {
+            [application endBackgroundTask:backgroundTaskID];
+            backgroundTaskID = UIBackgroundTaskInvalid;
+        }
+    }];
+
+}
+static BOOL inBackground=NO;
+static NSInteger count=0;
+-(void) backgroundhandler{
+    NSLog(@"### -->backgroundinghandler");
+    UIApplication*  app = [UIApplication sharedApplication];
+    backgroundTaskID = [app beginBackgroundTaskWithExpirationHandler:^{
+        if (backgroundTaskID != UIBackgroundTaskInvalid) {
+            [app endBackgroundTask: backgroundTaskID];
+            backgroundTaskID = UIBackgroundTaskInvalid;
+        }
+    }];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        while (inBackground) {
+            NSLog(@"backgroundTimeRemain counter:%ld", (long)count++);
+            NSLog(@"timer:%f", [app backgroundTimeRemaining]);
+            sleep(1);
+        }
+    });
 }
 
-
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    
+    if (backgroundTaskID != UIBackgroundTaskInvalid){
+        [application endBackgroundTask:backgroundTaskID];
+        backgroundTaskID = UIBackgroundTaskInvalid;
+    }
+    
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
 }
 
@@ -165,6 +154,6 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
      [XWCallCenter XWCallWillTerminate];
 }
-
+ 
 
 @end

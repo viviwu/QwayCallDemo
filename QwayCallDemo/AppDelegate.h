@@ -15,11 +15,9 @@
 
 #define kAPP_VERSION    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]
 
-#define kURL_VOIP_PRE @"https://api.91voip.com"
-#define kID_QWAY_APP @"a2c29623ef7435e35426175f4bd755d0"
+//#define kURL_VOIP_PRE @"https://api.91voip.com"
+#define kAppID @"a2c29623ef7435e35426175f4bd755d0"
 
-#define sandBoxServer @"http://sandbox.91voip.com"
-#define openVoipServer @"http://open.91voip.com"
 
 #define memberid @"test01@qq.com"
 #define memberkey @"65c47523b3284f74"
@@ -29,7 +27,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, copy) NSString* devicePushToken;
 
--(void)enterMainViewWithIdentifier:(NSString *)identifier;
+-(void)logoutAction;
 
 @end
 

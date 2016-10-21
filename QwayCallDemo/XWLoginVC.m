@@ -10,6 +10,7 @@
 #import "MBProgressHUD.h"
 #import "AppDelegate.h"
 
+
 @interface XWLoginVC ()
 
 @property (strong, nonatomic) IBOutlet UITextField *numberTF;
@@ -22,6 +23,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.numberTF.text=memberid;
+    self.passwordTF.text=memberkey;
+    self.internationalTelephoneCode=kUserDef_OBJ(@"area");
+    
     // Do any additional setup after loading the view.
 }
 - (IBAction)loginAction:(id)sender {
@@ -50,23 +55,25 @@
         return;
     }
     
+    
     [self.view endEditing:YES];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
-    
-    NSString *loginUrl = [NSString stringWithFormat:@"%@/v3/login.html?appid=%@&lang=cn&mobile=%@&password=%@&devicetoken=%@&area=%@&version=%@&platform=i", kURL_VOIP_PRE, kID_QWAY_APP, self.numberTF.text, self.passwordTF.text, kAppDel.devicePushToken, self.internationalTelephoneCode, kAPP_VERSION];
     if (!kAppDel.devicePushToken) {
-        NSLog(@"loginUrl==%@", loginUrl);
-        kAppDel.devicePushToken=kUserDef_OBJ(@"");
+        kAppDel.devicePushToken=kUserDef_OBJ(@"devicetoken");//你本机获取的APNS pushtoken
     }
+    //正在完善中 预计下午4:00前
+    NSString *loginUrl = [NSString stringWithFormat:@"%@?appid=%@&lang=cn&mobile=%@&password=%@&devicetoken=%@&area=%@&version=%@&platform=i", sandBoxServer, kID_QWAY_APP, self.numberTF.text, self.passwordTF.text, kAppDel.devicePushToken, self.internationalTelephoneCode, kAPP_VERSION];
+    
+    NSLog(@"loginUrl==%@", loginUrl);
+    
     NSURLRequest *loginRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:loginUrl]];
     [NSURLConnection sendAsynchronousRequest:loginRequest queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError){
         
         if (!connectionError) {
-            //            NSString *respString = [request responseString];
-            //            NSDictionary *respDict = [respString objectFromJSONString];
+
             NSDictionary * resDic=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&connectionError];
-            NSLog(@"%@", resDic);
+            NSLog(@"*******resDic=%@", resDic);
             if ([[NSString stringWithFormat:@"%@",resDic[@"code"]] isEqualToString:@"100"] &&[resDic[@"data"] isKindOfClass:[NSArray class]])
             {
                 [MBProgressHUD hideHUDForView:self.view animated:YES];

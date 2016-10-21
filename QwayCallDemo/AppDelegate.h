@@ -7,13 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XWCallCenter.h"
 
 #define kAppDel         ((AppDelegate *)[UIApplication sharedApplication].delegate)
 #define kUserDef_OBJ(s) [[NSUserDefaults standardUserDefaults] objectForKey:s]
 #define kUserDef        [NSUserDefaults standardUserDefaults]
-#define kURL_VOIP_PRE @"https://api.91voip.com"
-#define kID_QWAY_APP @"e62431fa1172ad0e3280eb445094b60d"
+
 #define kAPP_VERSION    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]
+
+#define kURL_VOIP_PRE @"https://api.91voip.com"
+#define kID_QWAY_APP @"a2c29623ef7435e35426175f4bd755d0"
+
+#define sandBoxServer @"http://sandbox.91voip.com"
+#define openVoipServer @"http://open.91voip.com"
+
+#define memberid @"test01@qq.com"
+#define memberkey @"65c47523b3284f74"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

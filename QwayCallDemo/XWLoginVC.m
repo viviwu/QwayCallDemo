@@ -63,6 +63,7 @@
         kAppDel.devicePushToken=kUserDef_OBJ(@"devicetoken");//你本机获取的APNS pushtoken
     }
     //正在完善中 预计下午4:00前
+    NSString * param=[NSString stringWithFormat:@"appid=%@&area=%@&devicetoken=%@&lang=cn&mobile=%@&password=%@&platform=i&version=%@",];
     NSString *loginUrl = [NSString stringWithFormat:@"%@?appid=%@&lang=cn&mobile=%@&password=%@&devicetoken=%@&area=%@&version=%@&platform=i", sandBoxServer, kID_QWAY_APP, self.numberTF.text, self.passwordTF.text, kAppDel.devicePushToken, self.internationalTelephoneCode, kAPP_VERSION];
     
     NSLog(@"loginUrl==%@", loginUrl);

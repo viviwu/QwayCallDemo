@@ -239,7 +239,7 @@ static XWOnCallVC * globalOBJ=nil;
 }
 
 
-static int duration = 0;
+//static int duration = 0;
 - (void)timeout:(id)unused
 {
 //    duration++; NSLog(@"+++++time:%d", duration);

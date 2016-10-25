@@ -239,13 +239,12 @@ static XWOnCallVC * globalOBJ=nil;
     [self terminateCurrentCall];
 }
 
-
 //static NSString *_keyStrs[] = {nil, @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"*", @"0", @"#"};
 
 - (IBAction)didTapDTMFKey:(UIButton *)sender {
-    NSLog(@"+++++++sender.tag=%ld", sender.tag);
-    int digit = _keyValues[sender.tag];
-    NSLog(@"digit==%d", digit );
+    int index=(int)(sender.tag);
+    const char digit = _keyValues[index];
+    NSLog(@"digit==%c", digit );
     [[XWCallCenter instance]sendDigitForDTMF:digit];
 }
 

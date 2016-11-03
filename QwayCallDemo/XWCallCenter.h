@@ -93,8 +93,6 @@ typedef enum _Connectivity {
     none
 } Connectivity;
 
-
-
 //incoming call notifaction message
 #define kIC_MSG     @"Incoming call:"      //   来电铃声文件名
 #define kmsg_snd    @"msg.caf"      //消息通知提示音文件名

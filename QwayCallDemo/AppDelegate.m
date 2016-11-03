@@ -22,9 +22,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    _currentMemberid=kUserDef_OBJ(@"memberid")?kUserDef_OBJ(@"memberid"):memberid;
-    _currentMemberkey=kUserDef_OBJ(@"memberkey")?kUserDef_OBJ(@"memberkey"):memberkey;;
-    
 #if TARGET_IPHONE_SIMULATOR
     self.devicePushToken = @"12345678901234567812345678";
 #else
@@ -34,6 +31,15 @@
         self.devicePushToken = tokenString;
     }
 #endif
+    UIUserNotificationType type =  UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound;
+    // UIMutableUserNotificationCategory 这个需要什么功能自己搞
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:type   categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    
+    _currentMemberid=kUserDef_OBJ(@"memberid")?kUserDef_OBJ(@"memberid"):memberid;
+    _currentMemberkey=kUserDef_OBJ(@"memberkey")?kUserDef_OBJ(@"memberkey"):memberkey;;
+    
+
     
      XWCallCenter *instance = [XWCallCenter instance];
      [instance   startXWCallCore];//主要是确保首次启动前完全初始化了

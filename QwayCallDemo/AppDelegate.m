@@ -22,9 +22,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    _currentMemberid=kUserDef_OBJ(@"memberid")?kUserDef_OBJ(@"memberid"):memberid;
+    _currentMemberkey=kUserDef_OBJ(@"memberkey")?kUserDef_OBJ(@"memberkey"):memberkey;;
+    
 #if TARGET_IPHONE_SIMULATOR
     self.devicePushToken = @"12345678901234567812345678";
 #else
+    //APNS token这个玩意儿 你自己知道怎么获取吧
     NSString *tokenString = kUserDef_OBJ(@"deviceToken");
     if (tokenString) {
         self.devicePushToken = tokenString;
@@ -40,7 +44,9 @@
         ![kUserDef_OBJ(@"sipserver") length] ||
         ![kUserDef_OBJ(@"tcpserver") length])
     {
-        [[XWCallCenter instance] proxyCoreWithAppKey:kAppID Memberid:memberid Memberkey:memberkey];
+        [[XWCallCenter instance] proxyCoreWithAppKey:kAppID
+                                            Memberid:_currentMemberid
+                                           Memberkey:_currentMemberid];
     }else{
         [[XWCallCenter instance] voipInitializeProxyConfig];
     }
@@ -77,7 +83,6 @@
 
 #pragma mark--applicationDidEnterBackground
 UIBackgroundTaskIdentifier backgroundTaskID;
-
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -88,7 +93,7 @@ UIBackgroundTaskIdentifier backgroundTaskID;
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-     [[XWCallCenter instance] enterBackgroundMode];
+    
 #warning 应用如何持续后台 自己写吧 务必可以保持后台！
     BOOL backgroundAccepted = [[UIApplication sharedApplication] setKeepAliveTimeout:600 handler:^{
         [self backgroundhandler];
@@ -109,7 +114,8 @@ UIBackgroundTaskIdentifier backgroundTaskID;
             backgroundTaskID = UIBackgroundTaskInvalid;
         }
     }];
-
+    
+    [[XWCallCenter instance] enterBackgroundMode];
 }
 static BOOL inBackground=NO;
 static NSInteger count=0;

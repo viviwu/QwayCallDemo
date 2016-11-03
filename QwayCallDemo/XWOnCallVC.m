@@ -14,7 +14,10 @@ const static char _keyValues[] = {0, '1', '2', '3', '4', '5', '6', '7', '8', '9'
 {
     NSTimer * callTimer;
 }
+
 @property (weak, nonatomic) IBOutlet UILabel * numberLabel;
+@property (strong, nonatomic) IBOutlet UILabel *timeLabel;
+
 @property (strong, nonatomic) IBOutlet UIView * keypad;
 @property (strong, nonatomic) IBOutlet UIButton * hungUpBtn;
 @property (strong, nonatomic) IBOutlet UIButton * rejectBtn;
@@ -111,7 +114,7 @@ static XWOnCallVC * globalOBJ=nil;
         case XWCallOutgoingRinging:
         case XWCallOutgoingEarlyMedia:
         {
- 
+            _timeLabel.text= @"Outgoing Progress";
             _answerBtn.hidden=YES;
             _rejectBtn.hidden=YES;
             _hungUpBtn.hidden=NO;
@@ -132,7 +135,8 @@ static XWOnCallVC * globalOBJ=nil;
                 callTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self  selector:@selector(timeout:) userInfo:nil repeats:YES];
                 [callTimer fire];
             }
-            
+            _timeLabel.text= @"Incoming Call";
+
             NSString * osVersion=[[UIDevice currentDevice] systemVersion];
             BOOL is_iOS10=[osVersion floatValue]>9.0 ? YES : NO;
             if (is_iOS10)
@@ -149,8 +153,8 @@ static XWOnCallVC * globalOBJ=nil;
             [UIDevice currentDevice].proximityMonitoringEnabled = YES;
             [UIApplication sharedApplication].idleTimerDisabled = YES;
             _answerBtn.hidden=NO;
-            _rejectBtn.hidden=NO;
             _hungUpBtn.hidden=YES;
+            _rejectBtn.hidden=NO;
             _keypad.hidden=YES;
         }
             break;
@@ -170,7 +174,7 @@ static XWOnCallVC * globalOBJ=nil;
             _answerBtn.hidden=YES;
             _rejectBtn.hidden=YES;
             _hungUpBtn.hidden=NO;
-            
+            _keypad.hidden=NO;
         }
             break;
             
@@ -191,7 +195,7 @@ static XWOnCallVC * globalOBJ=nil;
         case XWCallEnd:
         {
             [self resetControlersToDefaultState];
-            
+            _timeLabel.text= @"CallEnded";
             [[XWOnCallVC instance].view removeFromSuperview];
             
             [self performSelector:@selector(terminateCurrentCall)
@@ -242,10 +246,11 @@ static XWOnCallVC * globalOBJ=nil;
 //static NSString *_keyStrs[] = {nil, @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"*", @"0", @"#"};
 
 - (IBAction)didTapDTMFKey:(UIButton *)sender {
+    //这个功能对你们来说 并没有什么卵用  可以不用加
     int index=(int)(sender.tag);
     const char digit = _keyValues[index];
     NSLog(@"digit==%c", digit );
-    [[XWCallCenter instance]sendDigitForDTMF:digit];
+    [[XWCallCenter instance] sendDigitForDTMF:digit];
 }
 
 - (IBAction)micphoneMute:(UIButton*)sender {
@@ -271,16 +276,16 @@ static XWOnCallVC * globalOBJ=nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kXWCallUpdate object:nil];
 }
 
-//static int duration = 0;
+static int duration = 0;
 - (void)timeout:(id)unused
 {
-//    duration++; NSLog(@"+++++time:%d", duration);
-//    if (duration >= 3600) {
-//        long sec = duration % 3600;
-//        _timeLabel.text=[NSString stringWithFormat:@"%d:%02ld:%02ld", duration/3600, sec/60, sec%60];
-//    } else {
-//        _timeLabel.text=[NSString stringWithFormat:@"%02d:%02d", duration/60, duration%60];
-//    }
+    duration++; NSLog(@"+++++time:%d", duration);
+    if (duration >= 3600) {
+        long sec = duration % 3600;
+        _timeLabel.text=[NSString stringWithFormat:@"%d:%02ld:%02ld", duration/3600, sec/60, sec%60];
+    } else {
+        _timeLabel.text=[NSString stringWithFormat:@"%02d:%02d", duration/60, duration%60];
+    }
 }
 
 

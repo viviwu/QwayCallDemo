@@ -121,7 +121,7 @@ typedef enum _Connectivity {
 #pragma mark--ResignActive
 - (void)resetXWCallCore;    //重置呼叫系统
 - (void)startXWCallCore;    //启动呼叫系统
-+ (BOOL)isXWCallCoreReady;//呼叫中心是否初始化完成
++ (BOOL)isXWCallCoreReady;  //呼叫中心是否初始化完成
 
 #pragma markk--ProxyConfig
 //+ (void)addProxyConfig:(NSString*)username password:(NSString*)password domain:(NSString*)domain server:(NSString*)server;//添加基本配置信息:账户名ID

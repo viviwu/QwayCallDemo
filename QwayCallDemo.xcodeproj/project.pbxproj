@@ -10,10 +10,8 @@
 		0D1D86141DB92B5100BE3684 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D1D86131DB92B5100BE3684 /* MBProgressHUD.m */; };
 		0D1D86171DB9A2F100BE3684 /* libXWCallCenter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D1D86161DB9A2F100BE3684 /* libXWCallCenter.a */; };
 		0D1D861A1DB9A31F00BE3684 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D1D86181DB9A31F00BE3684 /* CoreTelephony.framework */; };
-		0D1D861B1DB9A31F00BE3684 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D1D86191DB9A31F00BE3684 /* CoreVideo.framework */; };
 		0D1D861E1DB9A32E00BE3684 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D1D861C1DB9A32E00BE3684 /* AudioToolbox.framework */; };
 		0D1D861F1DB9A32E00BE3684 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D1D861D1DB9A32E00BE3684 /* VideoToolbox.framework */; };
-		0D1D86211DB9A33B00BE3684 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D1D86201DB9A33B00BE3684 /* QuartzCore.framework */; };
 		0D1D86231DB9A34100BE3684 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D1D86221DB9A34100BE3684 /* SystemConfiguration.framework */; };
 		0D1D86281DB9A39400BE3684 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D1D86261DB9A39400BE3684 /* libresolv.9.tbd */; };
 		0D1D86291DB9A39400BE3684 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D1D86271DB9A39400BE3684 /* libresolv.tbd */; };
@@ -39,6 +37,9 @@
 		0D92AFAB1DB9060100F01B01 /* Qway SDK语音通话接口.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 0D92AFA71DB9060100F01B01 /* Qway SDK语音通话接口.rtf */; };
 		0D92AFAC1DB9060100F01B01 /* QwaySDK iOS版初始化和配置接口.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 0D92AFA81DB9060100F01B01 /* QwaySDK iOS版初始化和配置接口.rtf */; };
 		0D92AFAD1DB9060100F01B01 /* QwaySDK iOS版开发指南.rtfd in Resources */ = {isa = PBXBuildFile; fileRef = 0D92AFA91DB9060100F01B01 /* QwaySDK iOS版开发指南.rtfd */; };
+		0DE7EB4B1DCAC59A006DF8F8 /* msg.caf in Resources */ = {isa = PBXBuildFile; fileRef = 0DE7EB481DCAC59A006DF8F8 /* msg.caf */; };
+		0DE7EB4C1DCAC59A006DF8F8 /* ringback.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0DE7EB491DCAC59A006DF8F8 /* ringback.wav */; };
+		0DE7EB4D1DCAC59A006DF8F8 /* shortring.caf in Resources */ = {isa = PBXBuildFile; fileRef = 0DE7EB4A1DCAC59A006DF8F8 /* shortring.caf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,10 @@
 		0D92AFA71DB9060100F01B01 /* Qway SDK语音通话接口.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "Qway SDK语音通话接口.rtf"; sourceTree = "<group>"; };
 		0D92AFA81DB9060100F01B01 /* QwaySDK iOS版初始化和配置接口.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "QwaySDK iOS版初始化和配置接口.rtf"; sourceTree = "<group>"; };
 		0D92AFA91DB9060100F01B01 /* QwaySDK iOS版开发指南.rtfd */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; path = "QwaySDK iOS版开发指南.rtfd"; sourceTree = "<group>"; };
+		0DE7EB481DCAC59A006DF8F8 /* msg.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = msg.caf; sourceTree = "<group>"; };
+		0DE7EB491DCAC59A006DF8F8 /* ringback.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringback.wav; sourceTree = "<group>"; };
+		0DE7EB4A1DCAC59A006DF8F8 /* shortring.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = shortring.caf; sourceTree = "<group>"; };
+		0DE7EB4E1DCAC5A2006DF8F8 /* notes_of_the_optimistic.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = notes_of_the_optimistic.caf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,11 +126,9 @@
 				0D1D86281DB9A39400BE3684 /* libresolv.9.tbd in Frameworks */,
 				0D1D86291DB9A39400BE3684 /* libresolv.tbd in Frameworks */,
 				0D1D86231DB9A34100BE3684 /* SystemConfiguration.framework in Frameworks */,
-				0D1D86211DB9A33B00BE3684 /* QuartzCore.framework in Frameworks */,
 				0D1D861E1DB9A32E00BE3684 /* AudioToolbox.framework in Frameworks */,
 				0D1D861F1DB9A32E00BE3684 /* VideoToolbox.framework in Frameworks */,
 				0D1D861A1DB9A31F00BE3684 /* CoreTelephony.framework in Frameworks */,
-				0D1D861B1DB9A31F00BE3684 /* CoreVideo.framework in Frameworks */,
 				0D1D86171DB9A2F100BE3684 /* libXWCallCenter.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,6 +221,10 @@
 				0D92AF671DB8F2BD00F01B01 /* Assets.xcassets */,
 				0D92AF691DB8F2BD00F01B01 /* LaunchScreen.storyboard */,
 				0D92AF6C1DB8F2BD00F01B01 /* Info.plist */,
+				0DE7EB481DCAC59A006DF8F8 /* msg.caf */,
+				0DE7EB4E1DCAC5A2006DF8F8 /* notes_of_the_optimistic.caf */,
+				0DE7EB491DCAC59A006DF8F8 /* ringback.wav */,
+				0DE7EB4A1DCAC59A006DF8F8 /* shortring.caf */,
 				0D92AF5B1DB8F2BD00F01B01 /* Supporting Files */,
 			);
 			path = QwayCallDemo;
@@ -377,10 +384,13 @@
 				0D92AFAA1DB9060100F01B01 /* iOS SDK介绍.rtf in Resources */,
 				0D92AFAD1DB9060100F01B01 /* QwaySDK iOS版开发指南.rtfd in Resources */,
 				0D92AF6B1DB8F2BD00F01B01 /* LaunchScreen.storyboard in Resources */,
+				0DE7EB4C1DCAC59A006DF8F8 /* ringback.wav in Resources */,
 				0D92AFAC1DB9060100F01B01 /* QwaySDK iOS版初始化和配置接口.rtf in Resources */,
 				0D92AFAB1DB9060100F01B01 /* Qway SDK语音通话接口.rtf in Resources */,
 				0D92AF681DB8F2BD00F01B01 /* Assets.xcassets in Resources */,
+				0DE7EB4B1DCAC59A006DF8F8 /* msg.caf in Resources */,
 				0D92AF661DB8F2BD00F01B01 /* Main.storyboard in Resources */,
+				0DE7EB4D1DCAC59A006DF8F8 /* shortring.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

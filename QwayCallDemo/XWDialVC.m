@@ -10,10 +10,18 @@
 #import "AppDelegate.h"
 
 @interface XWDialVC ()
-@property (strong, nonatomic) IBOutlet UILabel *registrationStateLabel;
+
+@property (strong, nonatomic) IBOutlet UIView *accountView;
+@property (strong, nonatomic) IBOutlet UITextField *memberidTF;
+@property (strong, nonatomic) IBOutlet UITextField *memberkeyTF;
+
+@property (strong, nonatomic) IBOutlet UIView *dialView;
+@property (strong, nonatomic) IBOutlet UILabel *accountLabel;
 @property (strong, nonatomic) IBOutlet UITextField *numberTF;
 @property (nonatomic, copy) NSString * dialNumber;
 @property (nonatomic, copy) NSString * dialName;
+@property (strong, nonatomic) IBOutlet UIButton *checkOutBtn;
+
 @end
 
 @implementation XWDialVC
@@ -21,7 +29,6 @@
 {
     self=[super initWithCoder:aDecoder];
     if (self) {
-        
         //检测 sip注册状态
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(registrationUpdate:)
@@ -42,7 +49,6 @@
     XWCallRegistrationState state = [[notif.userInfo objectForKey: @"state"] intValue];
     NSString * message=[notif.userInfo objectForKey: @"message"];
     NSString * stateInfo=message;
-    _registrationStateLabel.text=message;
     NSLog(@"registrationUpdate:------>\n%@", notif.userInfo);
     switch (state) {
         case XWCallRegistrationNone:
@@ -55,6 +61,10 @@
             
         case XWCallRegistrationOk:
             stateInfo=@"CallRegistration Ok";
+            _accountLabel.text=kUserDef_OBJ(@"sipphone");
+            _accountView.hidden=YES;
+            _checkOutBtn.hidden=NO;
+            _dialView.hidden=NO;
             self.view.backgroundColor=[UIColor groupTableViewBackgroundColor];
             break;
             
@@ -76,15 +86,34 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     _dialName=@"vivi";
     _dialNumber=@"13048839909";
+    
+    _memberidTF.text=memberid2;
+    _memberkeyTF.text=memberkey2;
     // Do any additional setup after loading the view.
 }
 
+- (IBAction)saveAcount:(id)sender {
+    if (_memberidTF.text != nil) {
+        [kUserDef setObject:_memberidTF.text forKey:@"memberid"];
+        kAppDel.currentMemberid=_memberidTF.text;
+    }
+    if (_memberkeyTF.text !=nil) {
+        [kUserDef setObject:_memberkeyTF.text forKey:@"memberkey"];
+        kAppDel.currentMemberkey=_memberkeyTF.text;
+    }
+    [kUserDef synchronize];
+    
+    [self refreshSipConnect:nil];
+}
+
 - (IBAction)refreshSipConnect:(id)sender {
+    
     [[XWCallCenter instance] proxyCoreWithAppKey:kAppID
-                                        Memberid:memberid
-                                       Memberkey:memberkey];
+                                        Memberid:kAppDel.currentMemberid
+                                       Memberkey:kAppDel.currentMemberkey];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -99,12 +128,13 @@
     {
         self.view.backgroundColor=[UIColor brownColor];
         [[XWCallCenter instance] proxyCoreWithAppKey:kAppID
-                                            Memberid:memberid
-                                           Memberkey:memberkey];
+                                            Memberid:kAppDel.currentMemberid
+                                           Memberkey:kAppDel.currentMemberkey];
     }else{
         self.view.backgroundColor=[UIColor groupTableViewBackgroundColor];
     }
 }
+
 - (IBAction)stopEdit:(id)sender {
     [self.view endEditing:YES];
 }
@@ -123,8 +153,10 @@
 
 - (IBAction)logoutAction:(id)sender {
     self.view.backgroundColor=[UIColor brownColor];
-    
+    _accountView.hidden=NO;
+    _dialView.hidden=YES;
     [kAppDel logoutAction];
+    
 }
 
 //- (IBAction)makeOutCall:(id)sender {
@@ -143,6 +175,7 @@
 //        [[XWCallCenter instance]call:self.dialNumber displayName:self.dialName transfer:NO];
 //    }
 //}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -125,7 +125,6 @@ static XWOnCallVC * globalOBJ=nil;
             NSString *userName = [[NSString alloc] initWithUTF8String:constChar];
             NSLog(@"当前呼叫号码== %@", userName);
             _numberLabel.text=userName;
-
         }
             break;
             
@@ -149,6 +148,7 @@ static XWOnCallVC * globalOBJ=nil;
                 }];
             }else{
                 [kAppDel.window addSubview:[XWOnCallVC instance].view];
+                //从后台回来 如果没有等待铃声 这里可以自己播放
             }
             [UIDevice currentDevice].proximityMonitoringEnabled = YES;
             [UIApplication sharedApplication].idleTimerDisabled = YES;
@@ -279,7 +279,7 @@ static XWOnCallVC * globalOBJ=nil;
 static int duration = 0;
 - (void)timeout:(id)unused
 {
-    duration++; NSLog(@"+++++time:%d", duration);
+    duration++; 
     if (duration >= 3600) {
         long sec = duration % 3600;
         _timeLabel.text=[NSString stringWithFormat:@"%d:%02ld:%02ld", duration/3600, sec/60, sec%60];

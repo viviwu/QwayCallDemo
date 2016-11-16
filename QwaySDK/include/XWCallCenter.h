@@ -28,8 +28,9 @@ extern NSString *const kSocketNotification;
 extern NSString *const kSocketNotificationConnectKey;
 
 typedef enum _CallRemoteCommand {
-    XWCallRemoteCommandLogout = 0 ,   //远程命令下线  （异地登录或安全问题等）
-    XWCallRemoteCommandChangeServer,    //服务IP要改变了
+    XWCallRemoteCommandNone=0,
+    XWCallRemoteCommandLogout = 1 ,   //fouce logout: account security
+    XWCallRemoteCommandChangeServer,    //Change IP: Sip Server
     
 } XWCallRemoteCommand;
 
@@ -83,7 +84,7 @@ typedef enum _NetworkType {
     network_2g,
     network_3g,
     network_4g,
-    network_lte,
+    network_wwan,
     network_wifi
 } NetworkType;
 
@@ -93,62 +94,39 @@ typedef enum _Connectivity {
     none
 } Connectivity;
 
-
-
-//incoming call notifaction message
-#define kIC_MSG     @"Incoming call:"      //   来电铃声文件名
-#define kmsg_snd    @"msg.caf"      //消息通知提示音文件名
-#define kiOS7soundName    @"shortring.caf"  //iOS7以下的短铃声文件名
-
-// Set audio assets:
-#define kRemoteRing  @"ringback.wav"   //remote_ring 来电等待提示音文件名
-#define kHoldMusic  @"hold.mkv"     //hold_music 通话保留音文件名
-#define kLocalRing  @"notes_of_the_optimistic.caf"  //通知提示音文件名
-#define sandBoxServer @"http://sandbox.91voip.com"
-#define openVoipServer @"http://open.91voip.com"
 //***********************************
 #pragma mark--********XWCallCenter
 
 @interface XWCallCenter : NSObject
 
-+ (XWCallCenter*)instance;//单例主体，切勿重复实例化
++ (XWCallCenter*)instance;
 
 - (void)proxyCoreWithAppKey:(NSString*)appid
                    Memberid:(NSString*)memberid
                   Memberkey:(NSString*)memberkey;
--(void)voipInitializeProxyConfig;
+
++(BOOL)isRegistrationAvailable;
++(BOOL)isProxyParameterAvailable;
+-(void)updateServer;
 
 #pragma mark--ResignActive
 - (void)resetXWCallCore;    //重置呼叫系统
 - (void)startXWCallCore;    //启动呼叫系统
-+ (BOOL)isXWCallCoreReady;  //呼叫中心是否初始化完成
++ (BOOL)isXWCallCoreReady;//呼叫中心是否初始化完成
 
 #pragma markk--ProxyConfig
-//+ (void)addProxyConfig:(NSString*)username password:(NSString*)password domain:(NSString*)domain server:(NSString*)server;//添加基本配置信息:账户名ID
-
-+ (void)removeAllAccountsConfig;    //移除之前所有账号配置信息
-
-- (void)destroyXWCallCore;  //销毁呼叫系统
-
-
-
-#pragma mark--Function Utills
-+ (NSString*)getIPAddressForHost:(NSString *)hostname;//域名转IP
-+(BOOL)currentOSversionOver:(CGFloat)version;   //当前系统版本是否高于某个版本
-
+//移除之前所有账号信息
++ (void)removeAllAccountsData;
+//销毁呼叫系统
+- (void)destroyXWCallCore;
 
 //called when applicationWillResignActive
 +(void)XWCallWillResignActive;  //系统将不在活跃 ：app进入后台等情况时
 +(void)XWCallWillTerminate;     //系统随app被强制终止
 
-//- (BOOL)resignActive;
 - (void)becomeActive; //进入活跃状态
 - (void)activeIncaseOfIncommingCall;    //回到前台准备接收收到call
 - (BOOL)enterBackgroundMode;    //进入后台时
-
-+ (void)kickOffNetworkConnection;//自踢下线
-
-
 
 - (bool)allowSpeaker;   //扬声器是否允许使用
 
@@ -164,32 +142,17 @@ typedef enum _Connectivity {
 - (void)setSpeakerEnabled:(BOOL)enable; //扬声器是否可用
 - (void)holdOnCall:(BOOL)holdOn;    //通话暂停/保留
 
-#pragma mark--RemoteCommandConnect
-@property (nonatomic, strong) NSTimer * pingTimer;
+//incoming call notifaction message
+#define kIC_MSG     @"Incoming call:"      //   来电铃声文件名
+#define kmsg_snd    @"msg.caf"      //消息通知提示音文件名
+#define kiOS7soundName    @"shortring.caf"  //iOS7以下的短铃声文件名
 
-//-(void)connectWithCMDserver:(NSString*)host loginToken:(NSString*)logintoken userName:(NSString*)username;
--(BOOL)isCMDConnected;
-
-//typedef enum XMPPMessageStatus {
-//
-//    XMPPMessageStatus_Sent,          //消息已发送
-//    XMPPMessageStatus_Received,      //对方已接收到消息
-//    XMPPMessageStatus_Read,          //对方已查看到消息
-//    XMPPMessageStatus_SendFailed,    //消息发送失败
-//    XMPPMessageStatus_Coming,        //新消息到达
-//
-//}XMPPMessageStatus;
-//=============================================
-
-typedef enum XMPPConnectStatus {
-    
-    XMPPConnectStatus_Failed,        //XMPP连接失败
-    XMPPConnectStatus_Connected,     //XMPP已连接
-    XMPPConnectStatus_Timeout,       //XMPP连接超时
-    XMPPConnectStatus_Disconnect,    //XMPP连接已断开
-    XMPPConnectStatus_Connecting,    //XMPP连接中
-    
-}XMPPConnectStatus;
+// Set audio assets:
+#define kRemoteRing  @"ringback.wav"   //remote_ring 来电等待提示音文件名
+#define kHoldMusic  @"hold.mkv"     //hold_music 通话保留音文件名
+#define kLocalRing  @"notes_of_the_optimistic.caf"  //通知提示音文件名
+#define sandBoxServer @"http://sandbox.91voip.com"
+#define openVoipServer @"http://open.91voip.com"
 
 @end
 

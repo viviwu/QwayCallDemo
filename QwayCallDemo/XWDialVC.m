@@ -30,10 +30,7 @@
     self=[super initWithCoder:aDecoder];
     if (self) {
         //检测 sip注册状态
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(registrationUpdate:)
-                                                     name:kXWCallRegistrationUpdate
-                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registrationUpdate:)  name:kXWCallRegistrationUpdate object:nil];
         
     }
     return self;
@@ -49,7 +46,7 @@
     XWCallRegistrationState state = [[notif.userInfo objectForKey: @"state"] intValue];
     NSString * message=[notif.userInfo objectForKey: @"message"];
     NSString * stateInfo=message;
-    NSLog(@"registrationUpdate:------>\n%@", notif.userInfo);
+//    NSLog(@"registrationUpdate:------>\n%@", notif.userInfo);
     switch (state) {
         case XWCallRegistrationNone:
             stateInfo=@"CallRegistration None";
@@ -92,6 +89,8 @@
     
     _memberidTF.text=memberid2;
     _memberkeyTF.text=memberkey2;
+    ((AppDelegate*)[UIApplication sharedApplication].delegate).mainDialVC=(id)self;
+
     // Do any additional setup after loading the view.
 }
 
@@ -111,28 +110,25 @@
 
 - (IBAction)refreshSipConnect:(id)sender {
     
+    //登陆信息异常 重新登陆
     [[XWCallCenter instance] proxyCoreWithAppKey:kAppID
                                         Memberid:kAppDel.currentMemberid
                                        Memberkey:kAppDel.currentMemberkey];
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    if (![kUserDef_OBJ(@"sipphone") length] ||
-        ![kUserDef_OBJ(@"sippw") length] ||
-        ![kUserDef_OBJ(@"logintoken") length] ||
-        ![kUserDef_OBJ(@"sipserver") length] ||
-        ![kUserDef_OBJ(@"tcpserver") length])
+    [self performSelector:@selector(checkLoginState) withObject:nil afterDelay:5.0f];
+}
+-(void)checkLoginState
+{
+    if (![XWCallCenter isProxyParameterAvailable])
     {
-        self.view.backgroundColor=[UIColor brownColor];
-        [[XWCallCenter instance] proxyCoreWithAppKey:kAppID
-                                            Memberid:kAppDel.currentMemberid
-                                           Memberkey:kAppDel.currentMemberkey];
-    }else{
-        self.view.backgroundColor=[UIColor groupTableViewBackgroundColor];
-    }
+        [[XWCallCenter instance] updateServer];
+    } 
 }
 
 - (IBAction)stopEdit:(id)sender {
@@ -146,15 +142,18 @@
     }else{
         return;
     }
-    [[XWCallCenter instance]call:self.dialNumber
-                     displayName:self.dialName
-                        transfer:NO];
+    if ([XWCallCenter isXWCallCoreReady]) {
+        [[XWCallCenter instance]call:self.dialNumber
+                         displayName:self.dialName
+                            transfer:NO];
+    }
 }
 
 - (IBAction)logoutAction:(id)sender {
-    self.view.backgroundColor=[UIColor brownColor];
+ 
     _accountView.hidden=NO;
     _dialView.hidden=YES;
+    
     [kAppDel logoutAction];
     
 }

@@ -106,7 +106,6 @@
 		0D92AFA71DB9060100F01B01 /* Qway SDK语音通话接口.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "Qway SDK语音通话接口.rtf"; sourceTree = "<group>"; };
 		0D92AFA81DB9060100F01B01 /* QwaySDK iOS版初始化和配置接口.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "QwaySDK iOS版初始化和配置接口.rtf"; sourceTree = "<group>"; };
 		0D92AFA91DB9060100F01B01 /* QwaySDK iOS版开发指南.rtfd */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; path = "QwaySDK iOS版开发指南.rtfd"; sourceTree = "<group>"; };
-		0D9531671DCB478200234E3C /* XWCallCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XWCallCenter.h; sourceTree = "<group>"; };
 		0D9531681DCB4C1800234E3C /* qwayphonerc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = qwayphonerc; sourceTree = "<group>"; };
 		0D9531691DCB4C1800234E3C /* qwayphonerc-factory */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "qwayphonerc-factory"; sourceTree = "<group>"; };
 		0D95316A1DCB4C1800234E3C /* qwayphonerc~ipad */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "qwayphonerc~ipad"; sourceTree = "<group>"; };
@@ -223,8 +222,6 @@
 				0D92AFA11DB8F3A200F01B01 /* XWDialVC.m */,
 				0D92AF9D1DB8F39100F01B01 /* XWOnCallVC.h */,
 				0D92AF9E1DB8F39100F01B01 /* XWOnCallVC.m */,
-				0D9531671DCB478200234E3C /* XWCallCenter.h */,
-				0D92AFA51DB9060100F01B01 /* ReadMe */,
 				0D92AF641DB8F2BD00F01B01 /* Main.storyboard */,
 				0D9531681DCB4C1800234E3C /* qwayphonerc */,
 				0D9531691DCB4C1800234E3C /* qwayphonerc-factory */,
@@ -245,6 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				0D92AF5C1DB8F2BD00F01B01 /* main.m */,
+				0D92AFA51DB9060100F01B01 /* ReadMe */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -345,7 +343,7 @@
 				TargetAttributes = {
 					0D92AF571DB8F2BD00F01B01 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 3WV7R4EVUN;
+						DevelopmentTeam = ALAK6VG32W;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -355,13 +353,13 @@
 					};
 					0D92AF701DB8F2BD00F01B01 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 3WV7R4EVUN;
+						DevelopmentTeam = ALAK6VG32W;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 0D92AF571DB8F2BD00F01B01;
 					};
 					0D92AF7B1DB8F2BD00F01B01 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 3WV7R4EVUN;
+						DevelopmentTeam = ALAK6VG32W;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 0D92AF571DB8F2BD00F01B01;
 					};
@@ -580,7 +578,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 3WV7R4EVUN;
+				DEVELOPMENT_TEAM = ALAK6VG32W;
 				ENABLE_NS_ASSERTIONS = YES;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/QwaySDK/include";
 				INFOPLIST_FILE = QwayCallDemo/Info.plist;
@@ -591,7 +589,7 @@
 					"$(BUILT_PRODUCTS_DIR)",
 					"$(PROJECT_DIR)/QwaySDK/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = WU.QwayCallDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = WU.QwayCall;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -600,7 +598,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 3WV7R4EVUN;
+				DEVELOPMENT_TEAM = ALAK6VG32W;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/QwaySDK/include";
 				INFOPLIST_FILE = QwayCallDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -610,7 +608,7 @@
 					"$(BUILT_PRODUCTS_DIR)",
 					"$(PROJECT_DIR)/QwaySDK/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = WU.QwayCallDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = WU.QwayCall;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -619,7 +617,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 3WV7R4EVUN;
+				DEVELOPMENT_TEAM = ALAK6VG32W;
 				INFOPLIST_FILE = QwayCallDemoTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = WU.QwayCallDemoTests;
@@ -632,7 +630,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 3WV7R4EVUN;
+				DEVELOPMENT_TEAM = ALAK6VG32W;
 				INFOPLIST_FILE = QwayCallDemoTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = WU.QwayCallDemoTests;
@@ -644,7 +642,7 @@
 		0D92AF8C1DB8F2BD00F01B01 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = 3WV7R4EVUN;
+				DEVELOPMENT_TEAM = ALAK6VG32W;
 				INFOPLIST_FILE = QwayCallDemoUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = WU.QwayCallDemoUITests;
@@ -656,7 +654,7 @@
 		0D92AF8D1DB8F2BD00F01B01 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = 3WV7R4EVUN;
+				DEVELOPMENT_TEAM = ALAK6VG32W;
 				INFOPLIST_FILE = QwayCallDemoUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = WU.QwayCallDemoUITests;

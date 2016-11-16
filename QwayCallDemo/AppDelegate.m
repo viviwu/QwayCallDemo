@@ -7,14 +7,15 @@
 //
 #include <string.h>
 #include <CommonCrypto/CommonCrypto.h>
+#import <PushKit/PushKit.h>
 
 #import "AppDelegate.h"
-#import "XWDialVC.h"
 #import "XWOnCallVC.h"
+
 
 @interface AppDelegate ()
 
-@property (nonatomic, strong)XWDialVC * mainDialVC;
+@property (nonatomic, strong) PKPushRegistry* pushRegistry;
 
 @end
 
@@ -22,54 +23,52 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-#if TARGET_IPHONE_SIMULATOR
-    self.devicePushToken = @"12345678901234567812345678";
-#else
-    //APNS token这个玩意儿 你自己知道怎么获取吧
-    NSString *tokenString = kUserDef_OBJ(@"deviceToken");
-    if (tokenString) {
-        self.devicePushToken = tokenString;
-    }
-#endif
+    _currentMemberid=kUserDef_OBJ(@"memberid")?kUserDef_OBJ(@"memberid"):memberid;
+    _currentMemberkey=kUserDef_OBJ(@"memberkey")?kUserDef_OBJ(@"memberkey"):memberkey;
+    
+//#if TARGET_IPHONE_SIMULATOR
+//    self.apnsPushToken = @"12345678901234567812345678";
+//    self.voipPushToken = @"12345678901234567812345678";
+//#else
+//    NSString *apnsToken = kUserDef_OBJ(@"apnsToken");
+//    NSString *voipToken = kUserDef_OBJ(@"voipToken");
+//    self.apnsPushToken = apnsToken?apnsToken:@"1234567890";
+//    self.voipPushToken = voipToken?voipToken:@"1234567890";
+//#endif
     UIUserNotificationType type =  UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound;
-    // UIMutableUserNotificationCategory 这个需要什么功能自己搞
+    // UIMutableUserNotificationCategory
     UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:type   categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     
-    _currentMemberid=kUserDef_OBJ(@"memberid")?kUserDef_OBJ(@"memberid"):memberid;
-    _currentMemberkey=kUserDef_OBJ(@"memberkey")?kUserDef_OBJ(@"memberkey"):memberkey;;
-    
-
+    _pushRegistry = [[PKPushRegistry alloc] initWithQueue:dispatch_get_main_queue()];
+    _pushRegistry.delegate = (id)self;
+    _pushRegistry.desiredPushTypes=[NSSet setWithObject:PKPushTypeVoIP];
     
      XWCallCenter *instance = [XWCallCenter instance];
-     [instance   startXWCallCore];//主要是确保首次启动前完全初始化了
+     [instance   startXWCallCore];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(callRemoteCommandAction:) name:kCallRemoteCommandNotification object:nil];
     
-    if (![kUserDef_OBJ(@"sipphone") length] ||
-        ![kUserDef_OBJ(@"sippw") length] ||
-        ![kUserDef_OBJ(@"logintoken") length] ||
-        ![kUserDef_OBJ(@"sipserver") length] ||
-        ![kUserDef_OBJ(@"tcpserver") length])
+    if (![XWCallCenter isRegistrationAvailable])
     {
         [[XWCallCenter instance] proxyCoreWithAppKey:kAppID
                                             Memberid:_currentMemberid
-                                           Memberkey:_currentMemberid];
+                                           Memberkey:_currentMemberkey];
     }else{
-        [[XWCallCenter instance] voipInitializeProxyConfig];
+        //现在每次都要去重新请求SIP 服务器了
+        [[XWCallCenter instance] updateServer];
     }
     
      [[XWOnCallVC instance] resetControlersToDefaultState];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(callRemoteCommandAction:) name:kCallRemoteCommandKey object:nil];
-    
     return YES;
 }
 
 -(void)logoutAction{
     
     if ([XWCallCenter isXWCallCoreReady]) {
-        [XWCallCenter removeAllAccountsConfig];
+        [XWCallCenter removeAllAccountsData];
         [XWCallCenter XWCallWillTerminate];
     }
+    _mainDialVC.view.backgroundColor=[UIColor brownColor];;
 }
 
 -(void)callRemoteCommandAction:(NSNotification*)notify
@@ -80,27 +79,128 @@
         NSString * reason=info[@"reason"];
         UIAlertView * alert=[[UIAlertView alloc]initWithTitle:@"" message:reason delegate:nil cancelButtonTitle:@"ok" otherButtonTitles: nil];
         [alert show];
-        [self logoutAction];
+        [self performSelector:@selector(logoutAction) withObject:nil afterDelay:5.0f];
     }else if(XWCallRemoteCommandChangeServer == cmd){
         //根据收到的服务器替换登录时收到的IP去切换连接
+        [[XWCallCenter instance] updateServer];
         //一般不会更换的
     }
 }
 
-#pragma mark--applicationDidEnterBackground
-UIBackgroundTaskIdentifier backgroundTaskID;
-- (void)applicationWillResignActive:(UIApplication *)application {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-    [XWCallCenter XWCallWillResignActive];
+#pragma mark PKPushRegistryDelegate VoIP推送
+
+- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(PKPushType)type
+{ 
+    if([credentials.token length] == 0)
+    {
+        NSLog(@"voip token NULL");
+    }else{
+        NSString *token = [[credentials.token description] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+        token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+        if (token) {
+            self.voipPushToken=token;
+            [kUserDef setObject:token forKey:@"voipToken"];//目前你直接这么用字段存吧
+            [kUserDef synchronize];
+        }
+        NSLog(@"voipToken:\n%@", token);
+    }
+}
+
+- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(NSString *)type
+{
+    NSDictionary *puskDic = payload.dictionaryPayload[@"aps"];
+    NSLog(@"didReceiveIncomingPushWithPayload:\n%@", puskDic);
+    NSString * number= puskDic[@"caller"]?puskDic[@"caller"]:@"0";
+    //暂时我们不做特殊处理
+    NSString*alertTitle =[NSString stringWithFormat:@"%@", puskDic[@"alert"]];
+    NSString*alertBody =[NSString stringWithFormat:@"您有一个待处理来电: %@ , %@", number,puskDic[@"time"]];
+    [AppDelegate  postLocalNotificationWithTitle:alertTitle alertBody:alertBody];
+//    当然CallKit可以在这里接
+}
+
+#pragma mark--RemoteNotifications
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    if([deviceToken length] == 0){
+        NSLog(@"apns token NULL");
+    }else{
+        NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+        token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+        if (token) {
+            self.apnsPushToken=token;
+            [kUserDef setObject:token forKey:@"apnsToken"];
+            [kUserDef synchronize];
+        }
+        NSLog(@"apnsPushToken:\n%@", token);
+    }
+}
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler  NS_AVAILABLE_IOS(8_0)
+{
+    NSLog(@"RemoteNotification:%@", userInfo);//暂时我们不做特殊处理
+    NSString * number= userInfo[@"caller"]?userInfo[@"caller"]:@"0";
+    NSString*alertTitle =[NSString stringWithFormat:@"%@", userInfo[@"alert"]];
+    NSString*alertBody =[NSString stringWithFormat:@"您有一个待处理来电: %@ , %@", number,userInfo[@"time"]];
+    [AppDelegate  postLocalNotificationWithTitle:alertTitle alertBody:alertBody];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 1];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 0];
+    completionHandler();
+}
+
+-(void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void (^)())completionHandler NS_AVAILABLE_IOS(8_0)
+{
+    NSLog(@"identifier==%@----,\n notification=%@",identifier,notification);
+    UIApplicationState state = application.applicationState;
+    if(state == UIApplicationStateActive)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:notification.alertTitle
+                                                        message:notification.alertBody
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }else{
+        if(state == UIApplicationStateInactive){
+            NSLog(@"StateInactive: 程序运行在后台时，点击启动程序按钮时 :后台点击进入");
+        }else if(state == UIApplicationStateBackground){
+            NSLog(@"StateBackground: 程序运行在后台 ");
+        }
+//        [AppDelegate  postLocalNotificationWithTitle:notification.alertTitle alertBody:notification.alertBody];
+    }
+    completionHandler();
+}
+
++(void)postLocalNotificationWithTitle:(NSString*)title alertBody:(NSString*)bodly
+{
+    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+    localNotification.alertTitle = title;
+    localNotification.alertBody = bodly;
+    localNotification.soundName = @"prison_break.m4r";
+    [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+    
+    NSInteger budgetCnt = [[UIApplication sharedApplication] applicationIconBadgeNumber];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:budgetCnt+1];
 }
 
 
+-(void)displayIncomingCall:(NSUUID*)uuid handle:(NSString *)handle hasVideo:(BOOL)hasVideo completion:(void (^)(NSError * error))completionHandler
+{
+    //    [_providerDelegate reportIncomingCallUUID:uuid handle:handle hasVideo:hasVideo completion:completionHandler];
+}
+
+
+
+#pragma mark--applicationDidEnterBackground
+UIBackgroundTaskIdentifier backgroundTaskID;
+- (void)applicationWillResignActive:(UIApplication *)application {
+ 
+    [XWCallCenter XWCallWillResignActive];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+}
+
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    
-#warning 应用如何持续后台 自己写吧 务必可以保持后台！
+ 
+#warning  应用如何持续后台 自己写吧 这只是个例子，虽然有推送，但天朝的网你懂得 并不是万无一失的
     BOOL backgroundAccepted = [[UIApplication sharedApplication] setKeepAliveTimeout:600 handler:^{
         [self backgroundhandler];
     }];
@@ -151,21 +251,20 @@ static NSInteger count=0;
         backgroundTaskID = UIBackgroundTaskInvalid;
     }
     
-    // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
 }
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
     [[XWCallCenter instance] becomeActive];
     [[XWCallCenter instance] activeIncaseOfIncommingCall];
 }
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+
      [XWCallCenter XWCallWillTerminate];
 }
- 
+
 
 @end

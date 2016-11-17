@@ -15,7 +15,7 @@ const static char _keyValues[] = {0, '1', '2', '3', '4', '5', '6', '7', '8', '9'
     NSTimer * callTimer;
 }
 
-@property (weak, nonatomic) IBOutlet UILabel * numberLabel;
+@property (strong, nonatomic) IBOutlet UILabel * numberLabel;
 @property (strong, nonatomic) IBOutlet UILabel *timeLabel;
 
 @property (strong, nonatomic) IBOutlet UIView * keypad;
@@ -106,6 +106,13 @@ static XWOnCallVC * globalOBJ=nil;
 {
     NSLog(@"callUpdate==%@", notify.userInfo[@"message"]);
     XWCallState state = [[notify.userInfo objectForKey: @"state"] intValue];
+    const char* constChar=[XWCallCenter getCurrentCallAddress];
+    NSString *userName =nil;
+    if (constChar) {
+        userName = [[NSString alloc] initWithUTF8String:constChar];
+        _numberLabel.text=userName;
+        NSLog(@"当前呼叫号码== %@", userName);
+    }
     
     switch (state)
     {
@@ -120,42 +127,36 @@ static XWOnCallVC * globalOBJ=nil;
             _hungUpBtn.hidden=NO;
             
             [kAppDel.window addSubview:[XWOnCallVC instance].view];
-            
-            const char* constChar=[XWCallCenter getCurrentCallAddress];
-            NSString *userName = [[NSString alloc] initWithUTF8String:constChar];
-            NSLog(@"当前呼叫号码== %@", userName);
-            _numberLabel.text=userName;
         }
             break;
             
         case XWCallIncomingReceived:
         {
+            _timeLabel.text= @"Incoming Call";
             if ([callTimer isValid]) {
                 callTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self  selector:@selector(timeout:) userInfo:nil repeats:YES];
                 [callTimer fire];
             }
-            _timeLabel.text= @"Incoming Call";
-
-            NSString * osVersion=[[UIDevice currentDevice] systemVersion];
-            BOOL is_iOS10=[osVersion floatValue]>9.0 ? YES : NO;
-            if (is_iOS10)
-            {
-                const char* constChar=[XWCallCenter getCurrentCallAddress];
-                NSString *userName = [[NSString alloc] initWithUTF8String:constChar];
-                [self reportToCallKit:userName :NO];
-                [UIView  animateWithDuration:2.0 animations:^{
+            if (userName) {
+                NSString * osVersion=[[UIDevice currentDevice] systemVersion];
+                BOOL is_iOS10=[osVersion floatValue]>9.0 ? YES : NO;
+                if (is_iOS10)
+                {
+                    [self reportToCallKit:userName :NO];
+                    [UIView  animateWithDuration:2.0 animations:^{
+                        [kAppDel.window addSubview:[XWOnCallVC instance].view];
+                    }];
+                }else{
                     [kAppDel.window addSubview:[XWOnCallVC instance].view];
-                }];
-            }else{
-                [kAppDel.window addSubview:[XWOnCallVC instance].view];
-                //从后台回来 如果没有等待铃声 这里可以自己播放
+                    //从后台回来 如果没有等待铃声 这里可以自己播放
+                }
+                [UIDevice currentDevice].proximityMonitoringEnabled = YES;
+                [UIApplication sharedApplication].idleTimerDisabled = YES;
+                _answerBtn.hidden=NO;
+                _hungUpBtn.hidden=YES;
+                _rejectBtn.hidden=NO;
+                _keypad.hidden=YES;
             }
-            [UIDevice currentDevice].proximityMonitoringEnabled = YES;
-            [UIApplication sharedApplication].idleTimerDisabled = YES;
-            _answerBtn.hidden=NO;
-            _hungUpBtn.hidden=YES;
-            _rejectBtn.hidden=NO;
-            _keypad.hidden=YES;
         }
             break;
             

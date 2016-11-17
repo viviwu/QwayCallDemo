@@ -42,9 +42,7 @@
 @property (nonatomic, copy) NSString* currentMemberid;
 @property (nonatomic, copy) NSString* currentMemberkey;
 
-
 @property (nonatomic, strong)XWDialVC * mainDialVC;
-
 -(void)logoutAction;
 
 @end

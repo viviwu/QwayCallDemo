@@ -143,14 +143,14 @@ typedef enum _Connectivity {
 - (void)holdOnCall:(BOOL)holdOn;    //通话暂停/保留
 
 //incoming call notifaction message
-#define kIC_MSG     @"Incoming call:"      //   来电铃声文件名
+#define kIC_MSG     @"Incoming call:%@"      //   来电通知显示提示
 #define kmsg_snd    @"msg.caf"      //消息通知提示音文件名
-#define kiOS7soundName    @"shortring.caf"  //iOS7以下的短铃声文件名
 
 // Set audio assets:
 #define kRemoteRing  @"ringback.wav"   //remote_ring 来电等待提示音文件名
 #define kHoldMusic  @"hold.mkv"     //hold_music 通话保留音文件名
 #define kLocalRing  @"notes_of_the_optimistic.caf"  //通知提示音文件名
+#define kiOS7soundName    @"shortring.caf"  //iOS7以下的短铃声文件名
 #define sandBoxServer @"http://sandbox.91voip.com"
 #define openVoipServer @"http://open.91voip.com"
 

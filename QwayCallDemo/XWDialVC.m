@@ -89,6 +89,7 @@
     
     _memberidTF.text=memberid2;
     _memberkeyTF.text=memberkey2;
+    self.view.backgroundColor=[UIColor brownColor];
     ((AppDelegate*)[UIApplication sharedApplication].delegate).mainDialVC=(id)self;
 
     // Do any additional setup after loading the view.
@@ -109,12 +110,14 @@
 }
 
 - (IBAction)refreshSipConnect:(id)sender {
-    
     //登陆信息异常 重新登陆
-    [[XWCallCenter instance] proxyCoreWithAppKey:kAppID
-                                        Memberid:kAppDel.currentMemberid
-                                       Memberkey:kAppDel.currentMemberkey];
-    
+    if (![XWCallCenter isXWCallCoreReady]) {
+        [[XWCallCenter instance]   startXWCallCore];
+    }else{
+        [[XWCallCenter instance] proxyCoreWithAppKey:kAppID
+                                            Memberid:kAppDel.currentMemberid
+                                           Memberkey:kAppDel.currentMemberkey];
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -146,7 +149,7 @@
         [[XWCallCenter instance]call:self.dialNumber
                          displayName:self.dialName
                             transfer:NO];
-    }
+    } 
 }
 
 - (IBAction)logoutAction:(id)sender {

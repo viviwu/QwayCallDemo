@@ -49,7 +49,7 @@
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(callRemoteCommandAction:) name:kCallRemoteCommandNotification object:nil];
     
     if (![XWCallCenter isRegistrationAvailable])
-    {//请开发者们 自行去91voip.com 申请appID和账号 测试 尽量不要用demo里的账号
+    {//请合作企业 自行联系http://www.91qway.com 申请appID和账号 测试 尽量不要用demo里的账号
         [[XWCallCenter instance] proxyCoreWithAppKey:kAppID
                                             Memberid:_currentMemberid
                                            Memberkey:_currentMemberkey];

@@ -85,7 +85,7 @@
     [super viewDidLoad];
     
     _dialName=@"vivi";
-    _dialNumber=@"13048839909";
+    _dialNumber=@"911";
     
     _memberidTF.text=memberid2;
     _memberkeyTF.text=memberkey2;
@@ -112,7 +112,7 @@
 - (IBAction)refreshSipConnect:(id)sender {
     //登陆信息异常 重新登陆
     if (![XWCallCenter isXWCallCoreReady]) {
-        [[XWCallCenter instance]   startXWCallCore];
+        [[XWCallCenter instance] startXWCallCore];
     }else{
         [[XWCallCenter instance] proxyCoreWithAppKey:kAppID
                                             Memberid:kAppDel.currentMemberid
@@ -158,7 +158,6 @@
     _dialView.hidden=YES;
     
     [kAppDel logoutAction];
-    
 }
 
 //- (IBAction)makeOutCall:(id)sender {

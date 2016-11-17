@@ -49,7 +49,7 @@
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(callRemoteCommandAction:) name:kCallRemoteCommandNotification object:nil];
     
     if (![XWCallCenter isRegistrationAvailable])
-    {
+    {//请开发者们 自行去91voip.com 申请appID和账号 测试 尽量不要用demo里的账号
         [[XWCallCenter instance] proxyCoreWithAppKey:kAppID
                                             Memberid:_currentMemberid
                                            Memberkey:_currentMemberkey];
@@ -64,7 +64,8 @@
 
 -(void)logoutAction{
     
-    if ([XWCallCenter isXWCallCoreReady]) {
+    if ([XWCallCenter isXWCallCoreReady])
+    {
         [XWCallCenter removeAllAccountsData];
         [XWCallCenter XWCallWillTerminate];
     }
@@ -199,8 +200,9 @@ UIBackgroundTaskIdentifier backgroundTaskID;
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
- 
+    //虽说VoIP的pushKit可以快速通知来电信息 但你不希望应用一退到后台 一会儿就系统被杀了吧
 #warning  应用如何持续后台 自己写吧 这只是个例子，虽然有推送，但天朝的网你懂得 并不是万无一失的
+    
     BOOL backgroundAccepted = [[UIApplication sharedApplication] setKeepAliveTimeout:600 handler:^{
         [self backgroundhandler];
     }];

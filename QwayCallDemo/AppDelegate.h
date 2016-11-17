@@ -22,17 +22,12 @@
 //test01@qq.com    650001
 //test02@qq.com    654619
 
-//#define memberid @"test01@qq.com"
-//#define memberkey @"65c47523b3284f74"
+#define memberid @"test01@qq.com"
+#define memberkey @"65c47523b3284f74"
 
-//#define memberid2 @"test02@qq.com"
-//#define memberkey2 @"6ed2a1a6a1e690bf"
+#define memberid2 @"test02@qq.com"
+#define memberkey2 @"6ed2a1a6a1e690bf"
 
-#define memberid @"ios01"
-#define memberkey @"069d81a0c751764f"
-
-#define memberid2 @"ios02"
-#define memberkey2 @"5fd869139e462197"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

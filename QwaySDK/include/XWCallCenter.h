@@ -6,8 +6,8 @@
 //  Copyright © 2013年 viviwu. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import <UIKit/UIApplication.h>
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import <CoreTelephony/CTCallCenter.h>
@@ -15,30 +15,56 @@
 #import <SystemConfiguration/SCNetworkReachability.h>
 #import <Availability.h>
 
+#if defined(__APPLE__)
+#include "TargetConditionals.h"
+#endif
+
+#ifndef XW_DEPRECATED
+  #if defined(_XWC_VER)
+  #define XW_DEPRECATED __declspec(deprecated)
+  #else
+  #define XW_DEPRECATED __attribute__ ((deprecated))
+  #endif
+#endif
+
+#define XW_UNUSED(x) ((void)(x))
+
+#if defined(_XWC_VER)
+#define XW_PUBLIC	__declspec(dllexport)
+#define XW_VAR_PUBLIC extern __declspec(dllexport)
+#else
+#define XW_PUBLIC
+#define XW_VAR_PUBLIC extern
+#endif
+
+#define sandBoxServer @"http://sandbox.91voip.com"
+#define openVoipServer @"http://open.91voip.com"
+
 extern NSString *const XWCALL_APP_KEY;
 
 extern NSString *const kXWCallCoreUpdate;
 extern NSString *const kXWCallUpdate;
 extern NSString *const kXWCallRegistrationUpdate;
 extern NSString *const kXWCallGlobalStateUpdate;
+extern NSString *const kXWCallConfiguringStateUpdate;
+extern NSString *const kXWCallBluetoothAvailabilityUpdate;
+extern NSString *const kXWCallNotifyReceived;
+extern NSString *const kXWCallEncryptionChanged;
 
-extern NSString *const kCallRemoteCommandNotification;
-extern NSString *const kCallRemoteCommandKey;
-extern NSString *const kSocketNotification;
-extern NSString *const kSocketNotificationConnectKey;
+//new
+extern NSString *const kCallBackNotification;
+extern NSString *const kCallBackType;
+extern NSString *const kCaseTitle;
+extern NSString *const kCaseReason;
 
-typedef enum _CallRemoteCommand {
-    XWCallRemoteCommandNone=0,
-    XWCallRemoteCommandLogout = 1 ,   //fouce logout: account security
-    XWCallRemoteCommandChangeServer,    //Change IP: Sip Server
-    
-} XWCallRemoteCommand;
+struct XcCall;
 
-//#define WeakSelf __weak typeof(self) weakSelf = self;
-//#define WeakObj(o) __weak typeof(o) o##Weak = o;
-//#define WeakObj(o) autoreleasepool{} __weak typeof(o) o##Weak = o;
-//#define WeakObj(o) try{}@finally{} __weak typeof(o) o##Weak = o;
-
+typedef enum{
+  XWCallBackNone=0,   //tips message ,can be ignored
+  XWCMDLogoutCallBack = 1,  //logout
+  XWCMDChangeIPCallBack =2, //changeIP
+  XWErrorCatchCallBack = 3, //error catch with reason
+}XWCallBackType;
 
 
 typedef enum _XWCallState{
@@ -84,7 +110,7 @@ typedef enum _NetworkType {
     network_2g,
     network_3g,
     network_4g,
-    network_wwan,
+    network_lte,
     network_wifi
 } NetworkType;
 
@@ -94,65 +120,100 @@ typedef enum _Connectivity {
     none
 } Connectivity;
 
+typedef enum _VoipTransport {
+  TcpTransport,
+  UdpTransport,
+//  TLSTransport  /*TLS is unavailable currently*/
+//  DTLSTransport /*DTLS is unavailable currently*/
+} VoipTransport;
+
+
 //***********************************
 #pragma mark--********XWCallCenter
 
+#define SDK_VERSION @"1.1.20161215" 
+/*
+ @any questions, please contact：vivi705@qq.com
+ New feature in v1216:
+ 1.Enable 3 codecs：ilbc/8kHz,g729/8kHz,silk/16kHz ，default is ilbc
+ 2.Enable new notification callback format，attention to change！
+ 3.fix bugs about hold on call & resume call;
+ 4.fix bugs about crash when logout to terminate somtimes;
+*/
 @interface XWCallCenter : NSObject
 
-+ (XWCallCenter*)instance;
+@property(nonatomic, assign)BOOL shouldDropWhenCTCallIn;
+//@property (copy, nonatomic) NSString * apnsToken;
+//@property (copy, nonatomic) NSString * voipToken;
+XW_PUBLIC - (void)setApnsToken:(NSString *)apnsToken;
+XW_PUBLIC - (void)setVoipToken:(NSString *)voipToken;
 
-- (void)proxyCoreWithAppKey:(NSString*)appid
-                   Memberid:(NSString*)memberid
-                  Memberkey:(NSString*)memberkey;
+XW_PUBLIC + (XWCallCenter*)instance;
+XW_PUBLIC - (void)proxyCoreWithAppKey:(NSString*)appid
+                             Memberid:(NSString*)memberid
+                            Memberkey:(NSString*)memberkey XW_DEPRECATED;/* Use "-proxyCoreWithAppKey: memberid: memberkey: transport: instead"*/
+XW_PUBLIC - (void)proxyCoreWithAppKey:(NSString*)appid
+                             memberid:(NSString*)memberid
+                            memberkey:(NSString*)memberkey
+                            transport:(VoipTransport)transport;//default is tcp
 
-+(BOOL)isRegistrationAvailable;
-+(BOOL)isProxyParameterAvailable;
--(void)updateServer;
+//XW_PUBLIC - (void)voipInitializeProxyConfig XW_DEPRECATED;/*use "-refreshVoipConfigWithtransport:" instead*/
+XW_PUBLIC - (void)refreshVoipConfigWithTransport:(VoipTransport)transport;
+XW_PUBLIC - (VoipTransport)currentVoipTransportConfig;
 
-#pragma mark--ResignActive
-- (void)resetXWCallCore;    //重置呼叫系统
-- (void)startXWCallCore;    //启动呼叫系统
-+ (BOOL)isXWCallCoreReady;//呼叫中心是否初始化完成
+XW_PUBLIC + (BOOL)isRegistrationAvailable;
+XW_PUBLIC + (BOOL)isProxyParameterAvailable;
+XW_PUBLIC - (void)updateServer;
+
+XW_PUBLIC + (BOOL)isCurrentUserOnline:(NSString*)number;
+
+#pragma mark--CallCore Life Cycle
+XW_PUBLIC - (void)resetXWCallCore;
+XW_PUBLIC - (void)startXWCallCore;
+XW_PUBLIC + (BOOL)isXWCallCoreReady;
 
 #pragma markk--ProxyConfig
-//移除之前所有账号信息
-+ (void)removeAllAccountsData;
-//销毁呼叫系统
-- (void)destroyXWCallCore;
+
+XW_PUBLIC + (void)removeAllAccountsData;
+XW_PUBLIC - (void)destroyXWCallCore;
 
 //called when applicationWillResignActive
-+(void)XWCallWillResignActive;  //系统将不在活跃 ：app进入后台等情况时
-+(void)XWCallWillTerminate;     //系统随app被强制终止
+XW_PUBLIC + (void)XWCallWillResignActive;
+XW_PUBLIC + (void)XWCallWillTerminate;
+XW_PUBLIC - (void)becomeActive;
+XW_PUBLIC - (void)activeIncaseOfIncommingCall;
+XW_PUBLIC - (BOOL)enterBackgroundMode;
 
-- (void)becomeActive; //进入活跃状态
-- (void)activeIncaseOfIncommingCall;    //回到前台准备接收收到call
-- (BOOL)enterBackgroundMode;    //进入后台时
+XW_PUBLIC + (const char*)getCurrentCallAddress;
+XW_PUBLIC + (const char*)getCurrentCallAddressRemoteAddress;
 
-- (bool)allowSpeaker;   //扬声器是否允许使用
+XW_PUBLIC - (void)call:(NSString *)address
+           displayName:(NSString*)displayName
+              transfer:(BOOL)transfer;
 
-+(const char*)getCurrentCallAddress;//电话号码
+XW_PUBLIC - (void)fixRing;
+XW_PUBLIC - (BOOL)allowSpeaker;
 
-- (void)call:(NSString *)address displayName:(NSString*)displayName transfer:(BOOL)transfer;// 发起voip呼叫
+XW_PUBLIC - (void)answerCallWithVideo:(BOOL)video;
+XW_PUBLIC - (void)declineCall;
+XW_PUBLIC - (void)hangupCall;
+XW_PUBLIC - (void)sendDigitForDTMF:(const char)digit;
+XW_PUBLIC - (void)voipMicMute:(BOOL)mute;
+XW_PUBLIC - (void)setSpeakerEnabled:(BOOL)enable;
+XW_PUBLIC - (void)holdOnCall:(BOOL)holdOn;//pause call
+XW_PUBLIC - (void)setBluetoothEnabled:(BOOL)enable;//default is enable
 
-- (void)answerCallWithVideo:(BOOL)video;  //接听来电 以及是否是视频通话
-- (void)declineCall;    //拒接当前来电
-- (void)hangupCall;     //挂断电话
-- (void)sendDigitForDTMF:(const char)digit;  //通话中发送双频多音信息
-- (void)voipMicMute:(BOOL)mute; //通话中是否让麦克风静音
-- (void)setSpeakerEnabled:(BOOL)enable; //扬声器是否可用
-- (void)holdOnCall:(BOOL)holdOn;    //通话暂停/保留
+typedef enum _StreamInfoType {
+    StreamInfo_all = 0,
+    StreamInfo_trans,
+} StreamInfoType;
 
-//incoming call notifaction message
-#define kIC_MSG     @"Incoming call:%@"      //   来电通知显示提示
-#define kmsg_snd    @"msg.caf"      //消息通知提示音文件名
+XW_PUBLIC XW_PUBLIC - (NSString*)updateStats:(StreamInfoType)type timer:(NSTimer *)timer;//you may need a timer to invoke
 
-// Set audio assets:
-#define kRemoteRing  @"ringback.wav"   //remote_ring 来电等待提示音文件名
-#define kHoldMusic  @"hold.mkv"     //hold_music 通话保留音文件名
-#define kLocalRing  @"notes_of_the_optimistic.caf"  //通知提示音文件名
-#define kiOS7soundName    @"shortring.caf"  //iOS7以下的短铃声文件名
-#define sandBoxServer @"http://sandbox.91voip.com"
-#define openVoipServer @"http://open.91voip.com"
+XW_PUBLIC - (int)getCallDuration;
+XW_PUBLIC + (NSString *)durationToString:(int)duration;
+XW_PUBLIC - (BOOL)checkPhoneNumInput:(NSString *)mobileNum;//check wether the number is a chinese telephone number
+
 
 @end
 

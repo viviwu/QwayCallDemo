@@ -16,18 +16,11 @@
 
 #define kAPP_VERSION    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]
 
-//#define kURL_VOIP_PRE @"https://api.91voip.com"
-#define kAppID @"a2c29623ef7435e35426175f4bd755d0"
-
-//test01@qq.com    650001
-//test02@qq.com    654619
-
-#define memberid @"test01@qq.com"
-#define memberkey @"65c47523b3284f74"
-
-#define memberid2 @"test02@qq.com"
-#define memberkey2 @"6ed2a1a6a1e690bf"
-
+#define kAppID @"5f0874855e322897939bff801abe75f8"
+#define memberid2 @"a4882d0340850a80555d079dacf7c241"
+#define memberkey2 @"ea442ae0d2d22337"
+#define memberid @"50230379c398c969fd2c2a59e3669ede"
+#define memberkey @"acdb06dcffb8e635"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

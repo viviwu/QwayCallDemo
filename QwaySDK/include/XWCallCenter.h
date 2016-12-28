@@ -57,7 +57,7 @@ extern NSString *const kCallBackType;
 extern NSString *const kCaseTitle;
 extern NSString *const kCaseReason;
 
-struct XcCall;
+//struct XcCall;
 
 typedef enum{
   XWCallBackNone=0,   //tips message ,can be ignored
@@ -131,7 +131,8 @@ typedef enum _VoipTransport {
 //***********************************
 #pragma mark--********XWCallCenter
 
-#define SDK_VERSION @"1.1.20161215" 
+#define QWAYSDK_IOS_VERSION @"1.1.161228"  //1.13.9-110-g1581f95
+
 /*
  @any questions, please contact：vivi705@qq.com
  New feature in v1216:
@@ -178,7 +179,7 @@ XW_PUBLIC + (void)removeAllAccountsData;
 XW_PUBLIC - (void)destroyXWCallCore;
 
 //called when applicationWillResignActive
-XW_PUBLIC + (void)XWCallWillResignActive;
+XW_PUBLIC + (void)XWCallWillResignActive;//!!!
 XW_PUBLIC + (void)XWCallWillTerminate;
 XW_PUBLIC - (void)becomeActive;
 XW_PUBLIC - (void)activeIncaseOfIncommingCall;

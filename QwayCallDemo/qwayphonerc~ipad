@@ -17,7 +17,6 @@ voiceproc_preference=1
 reg_expires=1314000
 
 [misc]
-file_transfer_server_url=https://www.linphone.org:444/lft.php
 max_calls=3
 
 [net]
@@ -38,7 +37,7 @@ video_rtp_port=9200-9299
 
 [sip]
 auto_net_state_mon=0
-contact="Linphone iPhone" <sip:linphone.iphone@unknown-host>
+
 guess_hostname=1
 inc_timeout=45
 keepalive_period=30000
